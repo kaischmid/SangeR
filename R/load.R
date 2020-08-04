@@ -11,7 +11,7 @@
 
 
 
-read.ab1 <- function(filename = ){
+read.ab1 <- function(filename){
 
   #read ab1file with sangerseqR
   file <- sangerseqR::read.abif(filename = abi_file)
@@ -31,7 +31,9 @@ read.ab1 <- function(filename = ){
   #tranfer to fasta
 
   filename <- paste0(Bnummer, "_", genename, ".fastq")
-  CrispRVariants::abifToFastq(seqname = filename, fname = abi_file, outfname = filename, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset)
+  invisible(CrispRVariants::abifToFastq(seqname = filename, fname = abi_file, outfname = filename, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset))
 
+  #return
+  return(objects)
 
 }
