@@ -11,10 +11,10 @@
 
 
 
-read.ab1 <- function(filename){
+read.ab1 <- function(filename,cutoff = 0.05, min_seq_len = 20, offset = 33){
 
   #read ab1file with sangerseqR
-  file <- sangerseqR::read.abif(filename = abi_file)
+  file <- sangerseqR::read.abif(filename = filename)
 
   #extract B-number and genename
   ids <- file@data$SMPL.1
@@ -30,10 +30,14 @@ read.ab1 <- function(filename){
 
   #tranfer to fasta
 
-  filename <- paste0(Bnummer, "_", genename, ".fastq")
-  invisible(CrispRVariants::abifToFastq(seqname = filename, fname = abi_file, outfname = filename, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset))
+  file_name <- paste0(Bnummer, "_", genename, ".fastq")
+  invisible(CrispRVariants::abifToFastq(seqname = file_name, fname = file_name, outfname = file_name, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset))
+
+  #load fastq
+
+  fastq <- Biostrings::readDNAStringSet(filename, format = "fastq")
 
   #return
-  return(objects)
+  return(fastq)
 
 }
