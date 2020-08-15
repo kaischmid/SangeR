@@ -18,7 +18,7 @@
 get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset = "hsapiens_gene_ensembl", biomart = "ensembl"){
 
   #define mart
-  mart = useMart(biomart = biomart, dataset = dataset, host = host)
+  mart = biomaRt::useMart(biomart = biomart, dataset = dataset, host = host)
 
 
   #get reference sequence
@@ -43,6 +43,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
     print("Gene could not been found, please verify that the gene name is correct")
     exit()
   }
+  SangeR$upstream <- upstream
 
   #return
   return(SangeR)
