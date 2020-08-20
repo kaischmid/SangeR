@@ -1,16 +1,29 @@
+#' plot_hist module
+#'
+#' This function produces plots for all containing tags
+#'
+#' @param SangeR object from allign function.
+#'
+#' @return Objekt with plots for the given tags
+#'
+#' @export
+#'
+
+
+plot_hist <- function(SangeR){
 #chromatogramm
 
   #get values for chromatogram
   #order of channels
-  channel_order <- file@data$FWO_.1
+  channel_order <- SangeR$abi@data$FWO_.1
 
   #build data frome for histogramm
   #pool channels in data frame
-  data <- data.frame(1:length(file@data$DATA.9), file@data$DATA.9, file@data$DATA.10, file@data$DATA.11, file@data$DATA.12)
+  data <- data.frame(1:length(SangeR$abi@data$DATA.9), SangeR$abi@data$DATA.9, SangeR$abi@data$DATA.10, SangeR$abi@data$DATA.11, SangeR$abi@data$DATA.12)
   colnames(data) <- c("position",stringr::str_split(channel_order,"")[[1]])
 
   #add basecalls
-  basecalls <- data.frame(file@data$PLOC.1, unlist(strsplit(file@data$PBAS.1, ""))[1:nchar(file@data$PBAS.1)-1])
+  basecalls <- data.frame(SangeR$abi@data$PLOC.1, unlist(strsplit(SangeR$abi@data$PBAS.1, ""))[1:nchar(SangeR$abi@data$PBAS.1)-1])
   colnames(basecalls) <- c("position", "basecall")
   data[basecalls$position,"basecall"] <- basecalls$basecall
 
@@ -33,23 +46,23 @@
       if(pos > 6 && pos < (length(basecalls$position)-5)){
 
         #Pick region of interest
-        ROI <- data[(file@data$PLOC.1[(pos-5)]):file@data$PLOC.1[(pos+5)],]
-        ROI_melt <- reshape2::melt(ROI, id.vars=c("position", " ", "basecall"),  variable.name = "Samples", value.name="Values", na.rm = FALSE)
-        #add region chr7:1452341234
+        ROI <- data[(SangeR$abi@data$PLOC.1[(pos-5)]):SangeR$abi@data$PLOC.1[(pos+5)],]
+        ROI_melt <- reshape2::melt(ROI, id.vars=c("position", "basecall"),  variable.name = "Samples", value.name="Values", na.rm = FALSE)
 
         #print plot
         plot <- ggplot2::ggplot(ROI_melt, ggplot2::aes(position, Values)) +
                   ggplot2::scale_x_continuous(breaks = data$position[!is.na(data$basecall)], labels =  data$basecall[!is.na(data$basecall)]) +
-                  ggplot2::geom_line(ggplot2::aes(color=as.factor(basecall))) +
+                  ggplot2::geom_line(ggplot2::aes(color=as.factor(Samples))) +
+                  ggplot2::scale_color_discrete(name = "nucleotide") +
                   ggplot2::labs(title = paste0(genename, " ", tags)) +
                   ggplot2::theme_bw() +
                   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,))
 
         #write plot to file
-        grDevices::png(file = paste0("Chromatogramm_", Bnummer, "_", genename,".png"), width = 1200)
+        grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,".png"), width = 1200)
         print(plot)
         dev.off()
-        PNG_list <- c(PNG_list, paste0(getwd(),"/Chromatogramm_", Bnummer, "_", genename,".png"))
+        PNG_list <- c(PNG_list, paste0(getwd(),"/Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,".png"))
       }
       cnt <- cnt+1
     }
@@ -58,3 +71,4 @@
     print("no mutations")
 
   }
+}
