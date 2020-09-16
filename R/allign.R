@@ -12,7 +12,7 @@
 #'
 #' @export
 
-allign <- function(){
+allign <- function(SangeR){
 
   #load sequence in variable
   sequence <- toString(SangeR$fastq[1])

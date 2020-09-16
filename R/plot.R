@@ -63,6 +63,8 @@ plot_hist <- function(SangeR){
         print(plot)
         dev.off()
         PNG_list <- c(PNG_list, paste0(getwd(),"/Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,".png"))
+      } else{
+        print("no mutations")
       }
       cnt <- cnt+1
     }
