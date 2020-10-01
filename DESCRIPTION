@@ -1,12 +1,14 @@
 Package: sangeR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: SangeR
+Version: 0.0.0.9
+Author: person("Kai", "Schmid", email = "kai.schmid.patho.med.uni-giessen.de", role = c("aut", "cre"))
+Maintainer: Kai Schmid <kai.schmid@patho.med.uni-giessen.de>
+Description: This package reads in abi1 files from sanger sequencing, grabs automatically the correct reference, alligns it and finds SNPs. These are ploted in a histogramm with an information if/of the mutation.
+BugReports: https://github.com/kaischmid/SangeR/issues
+URL: https://github.com/kaischmid/SangeR
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: sangerseqR, biomaRt, stringr, ggplot2, reshape2, CrispRVariants, Biostrings, seqinr
+RoxygenNote: 7.1.1

@@ -9,6 +9,8 @@
 #' @export
 #'
 
+#global Variables
+globalVariables(c("mutations","abi_align","mart_align","position","Values","Samples","genename","tags"))
 
 plot_hist <- function(SangeR){
 #chromatogramm

@@ -3,14 +3,12 @@
 #' This function loads the reference for a given SangeR object
 #'
 #' @param SangeR object from get_ref() function.
-#' @param upstream region before gene to be loaded into ref_seq
-#' @param host Host to connect to. Defaults to grch37.ensembl.or
-#' @param dataset Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart('ensembl'), followed by listDatasets(mart). Default: hsapiens_gene_ensembl
-#' @param biomart BioMart database name you want to connect to. Possible database names can be retrieved with the function listMarts. Default: ensembl
-#'
 #' @return Objekt with all information about the alignment.
 #'
 #' @export
+
+#global Variables
+globalVariables(c("ref_position", "pep_info", "ref_aminoacid","ref_sequence"))
 
 allign <- function(SangeR){
 
@@ -68,12 +66,12 @@ allign <- function(SangeR){
       if(ref_position$strand == -1) {
 
         #mutation position for - strand
-        mutpos <- paste0("chr", ref_position$chromosome_name,":", ref_position$end_position - mut + upstream + 1)
+        mutpos <- paste0("chr", ref_position$chromosome_name,":", ref_position$end_position - mut + SangeR$upstream + 1)
 
       } else {
 
         #mutation position for + strand
-        mutpos <- paste0("chr",ref_position$chromosome_name,":", ref_position$start_position + mut + upstream + 1)
+        mutpos <- paste0("chr",ref_position$chromosome_name,":", ref_position$start_position + mut + SangeR$upstream + 1)
       }
       chr_pos <- strsplit(mutpos,":")[[1]][2]
 
