@@ -8,7 +8,7 @@
 #' @export
 
 #global Variables
-globalVariables(c("ref_position", "pep_info", "ref_aminoacid","ref_sequence"))
+globalVariables(c("ref_pos", "pep_info", "ref_aminoacid","ref_sequence"))
 
 allign <- function(SangeR){
 
@@ -63,27 +63,27 @@ allign <- function(SangeR){
 
       #find positions
 
-      if(ref_position$strand == -1) {
+      if(SangeR$ref_pos$strand == -1) {
 
         #mutation position for - strand
-        mutpos <- paste0("chr", ref_position$chromosome_name,":", ref_position$end_position - mut + SangeR$upstream + 1)
+        mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
 
       } else {
 
         #mutation position for + strand
-        mutpos <- paste0("chr",ref_position$chromosome_name,":", ref_position$start_position + mut + SangeR$upstream + 1)
+        mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut + SangeR$upstream + 1)
       }
       chr_pos <- strsplit(mutpos,":")[[1]][2]
 
       #check if mutation is in CDS
-      if(any((pep_info$exon_chrom_start<chr_pos) == (pep_info$exon_chrom_end>chr_pos))) {
+      if(any((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))) {
 
         #write tag for protein region
-        if(ref_position$strand == -1){
+        if(SangeR$ref_pos$strand == -1){
 
           #for reverse strand
 
-          pos <- (((as.numeric(pep_info$exon_chrom_end[(pep_info$exon_chrom_start<chr_pos) == (pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(pep_info$length[(which(((pep_info$exon_chrom_start<chr_pos) == (pep_info$exon_chrom_end>chr_pos)))+1):length(pep_info$length)]))/3)
+          pos <- (((as.numeric(SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(SangeR$pep_info$length[(which(((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)))+1):length(SangeR$pep_info$length)]))/3)
 
           Aa <- stringr::str_sub(ref_aminoacid$peptide, align@subject@mismatch[[1]][cnt])
           Aa_mut <- stringr::str_sub(sequence, align@pattern@mismatch[[1]][cnt], align@pattern@mismatch[[1]][cnt])
@@ -101,7 +101,7 @@ allign <- function(SangeR){
       } else {
 
         #write tag for off-region
-        base <- stringr::str_sub(ref_sequence$gene_exon_intron, mut, mut)
+        base <- stringr::str_sub(SangeR$ref_sequence$gene_exon_intron, mut, mut)
         mut <- stringr::str_sub(sequence, align@pattern@mismatch[[1]][cnt], align@pattern@mismatch[[1]][cnt])
         tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mut))
 

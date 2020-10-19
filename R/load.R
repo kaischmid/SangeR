@@ -15,18 +15,13 @@
 
 read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
-  object <- function(g,b,f,a,fa) {
-    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa)
-    attr(value, "class") <- "SangeR"
-    value
-  }
 
 
   #read ab1file with sangerseqR
   abif <- sangerseqR::read.abif(filename = filename)
 
   #extract B-number and genename
-  ids <- file@data$SMPL.1
+  ids <- abif@data$SMPL.1
 
   #extract B-nummer
 
@@ -45,6 +40,13 @@ read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
   #load fastq
 
   fastq <- Biostrings::readDNAStringSet(file_name, format = "fastq")
+
+  object <- function(g,b,f,a,fa) {
+    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa)
+    attr(value, "class") <- "SangeR"
+    value
+  }
+
 
   #return
   return(object(genename,Bnummer,filename,abif,fastq))

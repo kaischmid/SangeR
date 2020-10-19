@@ -22,7 +22,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   mart = biomaRt::useMart(biomart = biomart, dataset = dataset, host = host)
 
   #write upstream to SangeR object
-  SamgeR$upstream <- upstream
+  SangeR$upstream <- upstream
 
   #get reference sequence
   SangeR$ref_seq <- ref_sequence <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)

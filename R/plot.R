@@ -32,14 +32,14 @@ plot_hist <- function(SangeR){
 
   #region of interest
 
-  if(is.integer(mutations[[1]]) && length(mutations[[1]]) != 0L){
+  if(is.integer(SangeR$tags[[1]]) && length(SangeR$tags[[1]]) != 0L){
 
     #create counter and create vat for used file paths
 
     PNG_list <- c()
     cnt <- 1
 
-    for(mut in mutations[[1]]){
+    for(mut in SangeR$tags[[1]]){
 
       #mutation position in abifile
       pos <- as.numeric(abi_align@pattern@mismatch[which(mart_align@subject@mismatch %in% abi_align@subject@mismatch)]) #error in pick
