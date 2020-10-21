@@ -26,14 +26,14 @@ allign <- function(SangeR){
 
   if(mart_align_forward@score>=mart_align_reverse@score){
 
-    abi_align <- abi_align_forward
-    mart_align <- mart_align_forward
+    SangeR$abi_align <- abi_align_forward
+    SangeR$mart_align <- mart_align_forward
     SangeR$strand <- "forward"
 
   } else {
 
-    abi_align <- abi_align_reverse
-    mart_align <- mart_align_reverse
+    SangeR$abi_align <- abi_align_reverse
+    SangeR$mart_align <- mart_align_reverse
     SangeR$strand <- "reverse"
 
   }
@@ -47,19 +47,19 @@ allign <- function(SangeR){
 
   #use only common shared mismatches between abi file and the fasta base call
 
-  mutations <- mart_align@subject@mismatch[[1]][mart_align@subject@mismatch[[1]] %in% abi_align@subject@mismatch[[1]]]
-  align <- mart_align
+  SangeR$mutations <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
 
-  if(length(align@subject@mismatch[[1]]) != 0){
+  if(length(SangeR$align@subject@mismatch[[1]]) != 0){
 
     #write the tags
 
     cnt <- 1
     tags <- c()
 
-    for(mut in mutations[[1]]){
+    for(mut in SangeR$mutations[[1]]){
 
       #find positions
 
@@ -85,16 +85,16 @@ allign <- function(SangeR){
 
           pos <- (((as.numeric(SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(SangeR$pep_info$length[(which(((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)))+1):length(SangeR$pep_info$length)]))/3)
 
-          Aa <- stringr::str_sub(ref_aminoacid$peptide, align@subject@mismatch[[1]][cnt])
-          Aa_mut <- stringr::str_sub(sequence, align@pattern@mismatch[[1]][cnt], align@pattern@mismatch[[1]][cnt])
+          Aa <- stringr::str_sub(ref_aminoacid$peptide, SangeR$align@subject@mismatch[[1]][cnt])
+          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
           tags <- c(tags, paste0(Aa, Aa_mut))
 
         }else{
 
           #for forward strand
 
-          Aa <- stringr::str_sub(ref_aminoacid$peptide, align@subject@mismatch[[1]][cnt])
-          Aa_mut <- stringr::str_sub(sequence, align@pattern@mismatch[[1]][cnt], align@pattern@mismatch[[1]][cnt])
+          Aa <- stringr::str_sub(ref_aminoacid$peptide, SangeR$align@subject@mismatch[[1]][cnt])
+          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
           tags <- c(tags, paste0(Aa, Aa_mut))
         }
 
@@ -102,7 +102,7 @@ allign <- function(SangeR){
 
         #write tag for off-region
         base <- stringr::str_sub(SangeR$ref_sequence$gene_exon_intron, mut, mut)
-        mut <- stringr::str_sub(sequence, align@pattern@mismatch[[1]][cnt], align@pattern@mismatch[[1]][cnt])
+        mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
         tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mut))
 
       }
