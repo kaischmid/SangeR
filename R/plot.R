@@ -42,7 +42,7 @@ plot_hist <- function(SangeR){
     for(mut in SangeR$mutations[[1]]){
 
       #mutation position in abifile
-      pos <- as.numeric(SangeR$abi_align@pattern@mismatch[which(SangeR$mart_align@subject@mismatch %in% SangeR$abi_align@subject@mismatch)]) #error in pick
+      pos <- as.numeric(SangeR$abi_align@pattern@mismatch[which(SangeR$mart_align@subject@mismatch %in% SangeR$abi_align@subject@mismatch)])
 
       #check if position is on the borders of the sequenz
       if(pos > 6 && pos < (length(basecalls$position)-5)){
