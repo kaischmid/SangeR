@@ -8,7 +8,7 @@
 #' @export
 
 #global Variables
-globalVariables(c("ref_pos", "pep_info", "ref_aminoacid","ref_sequence"))
+globalVariables(c( "ref_aminoacid"))
 
 allign <- function(SangeR){
 

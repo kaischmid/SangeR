@@ -10,7 +10,7 @@
 #'
 
 #global Variables
-globalVariables(c("mutations","abi_align","mart_align","position","Values","Samples","genename","tags"))
+globalVariables(c("position","Values","Samples"))
 
 plot_hist <- function(SangeR){
 #chromatogramm
