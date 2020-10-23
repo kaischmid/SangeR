@@ -32,7 +32,7 @@ plot_hist <- function(SangeR){
 
   #region of interest
 
-  if(!is.null(SangeR$mutations[[1]]) && length(SangeR$mutations[[1]]) != 0L){
+  if(length(SangeR$mutations) != 0L){
 
     #create counter and create vat for used file paths
 
@@ -42,7 +42,7 @@ plot_hist <- function(SangeR){
     for(mut in SangeR$mutations[[1]]){
 
       #mutation position in abifile
-      pos <- as.numeric(SangeR$abi_align@pattern@mismatch[which(SangeR$mart_align@subject@mismatch %in% SangeR$abi_align@subject@mismatch)])
+      pos <- as.numeric(SangeR$mart_align@subject@mismatch[which(SangeR$mart_align@subject@mismatch %in% SangeR$abi_align@subject@mismatch)])
 
       #check if position is on the borders of the sequenz
       if(pos > 6 && pos < (length(basecalls$position)-5)){

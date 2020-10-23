@@ -30,7 +30,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   #ref aminoacid sequence
   temp_aminoacid <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = c("peptide","refseq_peptide",'end_position','start_position'))
   temp_aminoacid$refseq_peptide[temp_aminoacid$refseq_peptide==""] <- NA
-  SangeR$ref_amino <- ref_aminoacid <- temp_aminoacid[!is.na(temp_aminoacid$refseq_peptide),]
+  SangeR$ref_amino <- temp_aminoacid[!is.na(temp_aminoacid$refseq_peptide),]
 
   #reference position
   SangeR$ref_pos <- ref_position <- biomaRt::getBM(c('hgnc_symbol','chromosome_name','start_position','end_position','strand'),"hgnc_symbol",SangeR$genename, mart)

@@ -7,8 +7,6 @@
 #'
 #' @export
 
-#global Variables
-globalVariables(c( "ref_aminoacid"))
 
 allign <- function(SangeR){
 
@@ -39,11 +37,6 @@ allign <- function(SangeR){
   }
 
   #Mutation
-
-  #write tags for mismatches
-
-  mutations <- c()
-  align <- c()
 
   #use only common shared mismatches between abi file and the fasta base call
 
@@ -85,7 +78,7 @@ allign <- function(SangeR){
 
           pos <- (((as.numeric(SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(SangeR$pep_info$length[(which(((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)))+1):length(SangeR$pep_info$length)]))/3)
 
-          Aa <- stringr::str_sub(ref_aminoacid$peptide, SangeR$align@subject@mismatch[[1]][cnt])
+          Aa <- stringr::str_sub(SangeR$reaf_amino$peptide, SangeR$align@subject@mismatch[[1]][cnt])
           Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
           tags <- c(tags, paste0(Aa, Aa_mut))
 
@@ -93,7 +86,7 @@ allign <- function(SangeR){
 
           #for forward strand
 
-          Aa <- stringr::str_sub(ref_aminoacid$peptide, SangeR$align@subject@mismatch[[1]][cnt])
+          Aa <- stringr::str_sub(SangeR$reaf_amino$peptide, SangeR$align@subject@mismatch[[1]][cnt])
           Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
           tags <- c(tags, paste0(Aa, Aa_mut))
         }
