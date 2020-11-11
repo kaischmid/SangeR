@@ -45,7 +45,7 @@ allign <- function(SangeR){
 
   #combine tag elements for each string
 
-  if(length(SangeR$align@subject@mismatch[[1]]) != 0){
+  if(length(SangeR$mutations) != 0){
 
     #write the tags
 

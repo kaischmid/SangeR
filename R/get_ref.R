@@ -25,7 +25,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   SangeR$upstream <- upstream
 
   #get reference sequence
-  SangeR$ref_seq <- ref_sequence <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
+  SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
 
   #ref aminoacid sequence
   temp_aminoacid <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = c("peptide","refseq_peptide",'end_position','start_position'))
