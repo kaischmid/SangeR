@@ -41,6 +41,7 @@ allign <- function(SangeR){
   #use only common shared mismatches between abi file and the fasta base call
 
   SangeR$mutations <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  SangeR$mut_pos_align <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
   SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
@@ -94,8 +95,8 @@ allign <- function(SangeR){
       } else {
 
         #write tag for off-region
-        base <- stringr::str_sub(SangeR$ref_sequence$gene_exon_intron, mut, mut)
-        mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
+        base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
+        mut <- stringr::str_sub(sequence, SangeR$mut_pos_align,SangeR$mut_pos_align)
         tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mut))
 
       }

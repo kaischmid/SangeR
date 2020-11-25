@@ -29,13 +29,13 @@ read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
   #extrat genename
 
-  genename <- strsplit(ids, "_")[[1]][2]
+  genename <- strsplit(ids, "_")[[1]][1]
   genename <- gsub('[[:lower:]]', '', genename)
 
   #tranfer to fasta
 
   file_name <- paste0(Bnummer, "_", genename, ".fastq")
-  invisible(CrispRVariants::abifToFastq(seqname = file_name, fname = filename, outfname = file_name, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset))
+  invisible(CrispRVariants::abifToFastq(seqname = file_name, trim = TRUE, fname = filename, outfname = file_name, cutoff = cutoff, min_seq_len = min_seq_len, offset = offset))
 
   #load fastq
 

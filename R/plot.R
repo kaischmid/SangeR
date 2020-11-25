@@ -39,10 +39,10 @@ plot_hist <- function(SangeR){
     PNG_list <- c()
     cnt <- 1
 
-    for(mut in SangeR$mutations[[1]]){
+    for(mut in SangeR$mutations){
 
       #mutation position in abifile
-      pos <- as.numeric(SangeR$mart_align@subject@mismatch[which(SangeR$mart_align@subject@mismatch %in% SangeR$abi_align@subject@mismatch)])
+      pos <- as.numeric(SangeR$abi_align@pattern@mismatch[[1]][which(as.vector(SangeR$abi_align@subject@mismatch)[[1]] %in% as.vector(SangeR$mart_align@subject@mismatch)[[1]])])
 
       #check if position is on the borders of the sequenz
       if(pos > 6 && pos < (length(basecalls$position)-5)){
@@ -56,7 +56,7 @@ plot_hist <- function(SangeR){
                   ggplot2::scale_x_continuous(breaks = data$position[!is.na(data$basecall)], labels =  data$basecall[!is.na(data$basecall)]) +
                   ggplot2::geom_line(ggplot2::aes(color=as.factor(Samples))) +
                   ggplot2::scale_color_discrete(name = "nucleotide") +
-                  ggplot2::labs(title = paste0(SangeR$genename, " ", SangeR$tags)) +
+                  ggplot2::labs(title = paste0(SangeR$genename, " ", SangeR$tags[cnt])) +
                   ggplot2::theme_bw() +
                   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,))
 
