@@ -13,7 +13,7 @@
 #global Variables
 globalVariables(c("position","Values","Samples"))
 
-plot_hist <- function(SangeR, POI){
+plot_hist <- function(SangeR, POI = NULL){
 #chromatogramm
 
   #get values for chromatogram
@@ -32,35 +32,36 @@ plot_hist <- function(SangeR, POI){
 
   #points of interest
 
-  POI <- read.table("POI")
+  if (!is.null(POI)){
 
-  for(point in unlist(POI)){
-    chr <- as.numeric(strsplit(point,":")[[1]][1])
-    pos <- as.numeric(strsplit(point,":")[[1]][2])
-    end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream,SangeR$ref_pos$end_position)
-    start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream,SangeR$ref_pos$start_position)
-      if(chr == SangeR$ref_pos$chromosome_name && pos < end && pos > SangeR $ref_pos$start_position && !any(as.numeric(substr(point,nchar(point)-2,nchar(point))) == substr(SangeR$tags,2,4))){
-        tag <- paste0(substr(point,nchar(point)-2,nchar(point)),"wt")
-        SangeR$tags <- c(SangeR$tags, tag)
-        SangeR$mutations <- c(SangeR$mutations, end - pos)
-      }
+    POI <- read.table(POI)
+
+    for(point in unlist(POI)){
+      chr <- as.numeric(strsplit(point,":")[[1]][1])
+      pos <- as.numeric(strsplit(point,":")[[1]][2])
+      end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream,SangeR$ref_pos$end_position)
+      start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream,SangeR$ref_pos$start_position)
+        if(chr == SangeR$ref_pos$chromosome_name && pos < end && pos > SangeR $ref_pos$start_position && !any(as.numeric(substr(point,nchar(point)-2,nchar(point))) == substr(SangeR$tags,2,4))){
+          tag <- paste0(substr(point,nchar(point)-2,nchar(point)),"wt")
+          SangeR$tags <- c(SangeR$tags, tag)
+          SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
+        }
+    }
   }
 
   #region of interest
 
-  if(length(SangeR$mutations) != 0L){
+  if(length(SangeR$mutations_ref) != 0L){
 
     #create counter and create vat for used file paths
 
-    PNG_list <- c()
+    PNG_list <- list()
     cnt <- 1
 
-    for(mut in SangeR$mutations){
+    for(mut in SangeR$mutations_ref){
 
       #mutation position in abifile
       pos <- mut - SangeR$abi_align@subject@range@start + 1
-
-      print(pos)
 
       #check if position is on the borders of the sequenz
       if(pos > 6 && pos < (length(basecalls$position)-5)){
@@ -79,10 +80,11 @@ plot_hist <- function(SangeR, POI){
                   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,))
 
         #write plot to file
-        grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"), width = 1200)
-        print(plot)
-        dev.off()
-        PNG_list <- c(PNG_list, paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"))
+        #grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"), width = 1200)
+        #print(plot)
+        #dev.off()
+        PNG_list[[cnt]] <- plot
+
       } else{
         print("no mutations")
       }

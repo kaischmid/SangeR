@@ -25,7 +25,7 @@ read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
   #extract B-nummer
 
-  Bnummer <- strsplit(ids, "_")[[1]][1]
+  Bnummer <- strsplit(ids, "_")[[1]][2]
 
   #extrat genename
 
@@ -40,6 +40,10 @@ read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
   #load fastq
 
   fastq <- Biostrings::readDNAStringSet(file_name, format = "fastq")
+
+  #clean up
+
+  file.remove(file_name)
 
   object <- function(g,b,f,a,fa) {
     value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa)

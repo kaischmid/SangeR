@@ -40,20 +40,20 @@ allign <- function(SangeR){
 
   #use only common shared mismatches between abi file and the fasta base call
 
-  SangeR$mutations <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
-  SangeR$mut_pos_align <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
   SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
 
-  if(length(SangeR$mutations) != 0){
+  if(length(SangeR$mutations_ref) != 0){
 
     #write the tags
 
     cnt <- 1
     tags <- c()
 
-    for(mut in SangeR$mutations[[1]]){
+    for(mut in SangeR$mutations_ref[[1]]){
 
       #find positions
 
@@ -79,6 +79,11 @@ allign <- function(SangeR){
 
           pos <- (((as.numeric(SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(SangeR$pep_info$length[(which(((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)))+1):length(SangeR$pep_info$length)]))/3)
 
+          SangeR$pep_info$exon_chrom_start
+          SangeR$pep_info$exon_chrom_end
+
+          sum(SangeR$pep_info$exon_chrom_end - SangeR$pep_info$exon_chrom_start)
+
           Aa <- stringr::str_sub(SangeR$reaf_amino$peptide, SangeR$align@subject@mismatch[[1]][cnt])
           Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
           tags <- c(tags, paste0(Aa, Aa_mut))
@@ -96,8 +101,8 @@ allign <- function(SangeR){
 
         #write tag for off-region
         base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
-        mut <- stringr::str_sub(sequence, SangeR$mut_pos_align,SangeR$mut_pos_align)
-        tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mut))
+        mutation <- stringr::str_sub(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)
+        tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mutation))
 
       }
       #for counter

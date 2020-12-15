@@ -27,25 +27,26 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   #get reference sequence
   SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
 
-  #controll if gene could be found
-
-  if(length(SangeR$ref_seq$gene_exon_intron) == 0) {
-    stop("Gene could not been found, please verify that the gene name is correct")
-  }
-
   #ref aminoacid sequence
   temp_aminoacid <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = c("peptide","refseq_peptide",'end_position','start_position'))
   temp_aminoacid$refseq_peptide[temp_aminoacid$refseq_peptide==""] <- NA
   SangeR$ref_amino <- temp_aminoacid[!is.na(temp_aminoacid$refseq_peptide),]
 
   #reference position
-  SangeR$ref_pos <- ref_position <- biomaRt::getBM(c('hgnc_symbol','chromosome_name','start_position','end_position','strand'),"hgnc_symbol",SangeR$genename, mart)
+  SangeR$ref_pos <- biomaRt::getBM(c('hgnc_symbol','chromosome_name','start_position','end_position','strand'), "hgnc_symbol", SangeR$genename, mart)
 
   #pepitde informations
-  pep_info <- biomaRt::getBM(values = strsplit(SangeR$ref_amino$refseq_peptide,split = ';')[[1]][1], "refseq_peptide", attributes = c('chromosome_name','exon_chrom_start','exon_chrom_end'), mart = mart)
-  SangeR$pep_info <- pep_info[order(pep_info$exon_chrom_start),]
-  SangeR$pep_info$length <- (SangeR$pep_info$exon_chrom_end - SangeR$pep_info$exon_chrom_start - 3)
+  pep_info <- biomaRt::getBM(values = strsplit(SangeR$ref_amino$refseq_peptide,split = ';')[[1]][1], "refseq_peptide", attributes = c('chromosome_name','cdna_coding_start','cdna_coding_end'), mart = mart)
+  SangeR$pep_info <- pep_info[order(pep_info$cdna_coding_start),]
+  SangeR$pep_info$length <- (SangeR$pep_info$cdna_coding_end - SangeR$pep_info$cdna_coding_start)
 
+  #controll if gene could be found
+
+  if(length(SangeR$ref_seq$gene_exon_intron) == 0) {
+    print("Gene could not been found, please verify that the gene name is correct")
+    exit()
+  }
+  SangeR$upstream <- upstream
 
   #return
   return(SangeR)
