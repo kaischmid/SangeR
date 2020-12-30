@@ -1,6 +1,6 @@
-#' plot_hist module
+#' @name plot_hist
 #'
-#' This function produces plots for all containing tags
+#' @title This function produces plots for all containing tags
 #'
 #' @param SangeR object from allign function.
 #' @param POI list of points of interesst
@@ -14,7 +14,8 @@
 globalVariables(c("position","Values","Samples"))
 
 plot_hist <- function(SangeR, POI = NULL){
-#chromatogramm
+
+  #chromatogramm
 
   #get values for chromatogram
   #order of channels
@@ -34,7 +35,7 @@ plot_hist <- function(SangeR, POI = NULL){
 
   if (!is.null(POI)){
 
-    POI <- read.table(POI)
+    POI <- utils::read.table(POI)
 
     for(point in unlist(POI)){
       chr <- as.numeric(strsplit(point,":")[[1]][1])

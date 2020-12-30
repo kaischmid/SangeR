@@ -1,8 +1,11 @@
-#' read.ab1 module
+#' @name read.ab1
 #'
-#' This function reads in a given abi1-file
+#' @title This function reads in a given abi1-file.
 #'
 #' @param filename location of a ab1 file.
+#' @param delimiter delimiter in genename/ID of ab1 file
+#' @param ID_pos position of ID in genename/ID of ab1 file
+#' @param genename_pos position of genename in genename/ID of ab1 file
 #' @param cutoff cutoff for Basecall of the fastq. Default: 0.05
 #' @param min_seq_len minimum sequence length for Basecall of the fastq. Default: 20
 #' @param offset Offset for Basecall of the fastq. Default: 33
@@ -13,7 +16,7 @@
 
 
 
-read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
+read.ab1 <- function(filename, delimiter = "_", ID_pos = 2, genename_pos = 1, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
 
 
@@ -25,11 +28,11 @@ read.ab1 <- function(filename, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
   #extract B-nummer
 
-  Bnummer <- strsplit(ids, "_")[[1]][2]
+  Bnummer <- strsplit(ids, delimiter)[[1]][ID_pos]
 
   #extrat genename
 
-  genename <- strsplit(ids, "_")[[1]][1]
+  genename <- strsplit(ids, "_")[[1]][genename_pos]
   genename <- gsub('[[:lower:]]', '', genename)
 
   #tranfer to fasta

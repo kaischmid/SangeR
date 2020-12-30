@@ -2,16 +2,7 @@
 % Please edit documentation in R/get_ref.R
 \name{get_ref}
 \alias{get_ref}
-\title{get_ref module}
-\usage{
-get_ref(
-  SangeR,
-  upstream = 500,
-  host = "grch37.ensembl.org",
-  dataset = "hsapiens_gene_ensembl",
-  biomart = "ensembl"
-)
-}
+\title{This function loads the reference for a given SangeR object}
 \arguments{
 \item{SangeR}{object from read.ab1() function.}
 
@@ -19,7 +10,7 @@ get_ref(
 
 \item{host}{Host to connect to. Defaults to grch37.ensembl.or}
 
-\item{dataset}{Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart('ensembl'), followed by listDatasets(mart). Default: hsapiens_gene_ensembl}
+\item{dataset}{Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart("ensembl"), followed by listDatasets(mart). Default: hsapiens_gene_ensembl}
 
 \item{biomart}{BioMart database name you want to connect to. Possible database names can be retrieved with the function listMarts. Default: ensembl}
 }

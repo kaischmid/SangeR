@@ -2,12 +2,11 @@
 % Please edit documentation in R/plot.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{plot_hist module}
-\usage{
-plot_hist(SangeR)
-}
+\title{This function produces plots for all containing tags}
 \arguments{
 \item{SangeR}{object from allign function.}
+
+\item{POI}{list of points of interesst}
 }
 \value{
 Objekt with plots for the given tags

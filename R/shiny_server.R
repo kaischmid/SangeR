@@ -1,101 +1,128 @@
-library(shiny)
+#' @name  shiny_server
+#'
+#' @title  This functions produce a Rshiny server interface
+#'
+#' @export
+#'
 
+library(gridExtra)
+
+#' @name ui
+#' @title User Interface
+#' @export
+#'
 # Define UI for SangeR app
-ui <- fluidPage(
+ui <- shiny::fluidPage(
 
   # App title
-  titlePanel("SangeR"),
+  shiny::titlePanel("SangeR"),
 
   # Sidebar layout with input and output definitions
-  sidebarLayout(
+  shiny::sidebarLayout(
 
 
 
     # Sidebar panel for inputs
-    sidebarPanel(
+    shiny::sidebarPanel(
 
       # Input: Select a file
-      fileInput("file1", "Choose ab1 File",
+      shiny::fileInput("file1", "Choose ab1 File",
                 multiple = FALSE),
 
+      #Input: delimiter
+      shiny::textInput("delimiter","delimiter in ab1 file"),
+      shiny::verbatimTextOutput("_"),
+
+      # Input position of genename
+      shiny::sliderInput(inputId = "genename_pos",
+                  label = "genename Positiont:",
+                  min = 1,
+                  max = 5,
+                  value = 1),
+
       # Input: Select a POI
-      fileInput("file2", "Choose POI File",
+      shiny::fileInput("file2", "Choose POI File",
                 multiple = FALSE),
 
       # Horizontal line
-      tags$hr(),
-      tags$label("Read in parameter"),
+      shiny::tags$hr(),
+      shiny::tags$label("Read in parameter"),
 
       # Input for offset
-      sliderInput(inputId = "offset",
+      shiny::sliderInput(inputId = "offset",
                   label = "offset:",
                   min = 1,
                   max = 50,
                   value = 33),
 
       # Input for minimal sequence length
-      sliderInput(inputId = "min_seq_len",
+      shiny::sliderInput(inputId = "min_seq_len",
                   label = "minimum sequence length:",
                   min = 1,
                   max = 50,
                   value = 20),
 
       # Input for cutoff
-      sliderInput(inputId = "cutoff",
+      shiny::sliderInput(inputId = "cutoff",
                   label = "cutoff:",
                   min = 0.001,
                   max = 0.3,
                   value = 0.05),
 
       # Input for upstram region
-      sliderInput(inputId = "upstream",
+      shiny::sliderInput(inputId = "upstream",
                   label = "upstream:",
                   min = 0,
                   max = 2000,
                   value = 500),
 
       # Horizontal line ----
-      tags$hr(),
-      tags$label("Host parameter"),
+      shiny::tags$hr(),
+      shiny::tags$label("Host parameter"),
 
       #Input for host
-      selectInput(
+      shiny::selectInput(
         inputId = "host",
         label = "host",
         choices = c("grch37.ensembl.org","www.ensembl.org"),
       ),
 
       #donwload button
-      downloadButton('downloadPlot', 'Download Plot')
+      shiny::downloadButton('downloadPlot', 'Download Plot')
 
     ),
 
     # Main panel for displaying outputs
-    mainPanel(
+    shiny::mainPanel(
 
       # Output: Histogram ----
-      plotOutput(outputId = "distPlot")
+      shiny::plotOutput(outputId = "distPlot")
 
     )
   )
 )
 
+#' @name server
+#' @title Server
+#' @param input input for shiny ui
+#' @param output output from shiny ui
+#' @export
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
   # Histogram
 
-  plotInput <- reactive({
+  plotInput <- shiny::reactive({
 
     if(!is.null(input$file1)){
-      histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)),POI = input$file2$datapath)
+      histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, delimiter = input$delimiter, genename_pos = input$genename_pos, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)),POI = input$file2$datapath)
 
       do.call("grid.arrange", c(histograms, ncol=1))
     }
 
   })
 
-  output$distPlot <- renderPlot({
+  output$distPlot <- shiny::renderPlot({
 
     if(!is.null(input$file1)){
       print(plotInput())
@@ -103,10 +130,10 @@ server <- function(input, output) {
   })
 
   #download of png
-  output$downloadPlot <- downloadHandler(
+  output$downloadPlot <- shiny::downloadHandler(
     filename = "Shinyplot.png",
     content = function(file) {
-      png(file)
+      grDevices::png(file)
       print(plotInput())
       dev.off()
     })
@@ -114,4 +141,4 @@ server <- function(input, output) {
 }
 
 # Create Shiny app ----
-shinyApp(ui = ui, server = server)
+shiny::shinyApp(ui = ui, server = server)

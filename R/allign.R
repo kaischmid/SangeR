@@ -1,6 +1,6 @@
-#' allign module
+#' @name  allign
 #'
-#' This function loads the reference for a given SangeR object
+#' @title  This function loads the reference for a given SangeR object
 #'
 #' @param SangeR object from get_ref() function.
 #' @return Objekt with all information about the alignment.

@@ -2,12 +2,26 @@
 % Please edit documentation in R/load.R
 \name{read.ab1}
 \alias{read.ab1}
-\title{read.ab1 module}
+\title{This function reads in a given abi1-file.}
 \usage{
-read.ab1(filename, cutoff = 0.05, min_seq_len = 20, offset = 33)
+read.ab1(
+  filename,
+  delimiter = "_",
+  ID_pos = 2,
+  genename_pos = 1,
+  cutoff = 0.05,
+  min_seq_len = 20,
+  offset = 33
+)
 }
 \arguments{
 \item{filename}{location of a ab1 file.}
+
+\item{delimiter}{delimiter in genename/ID of ab1 file}
+
+\item{ID_pos}{position of ID in genename/ID of ab1 file}
+
+\item{genename_pos}{position of genename in genename/ID of ab1 file}
 
 \item{cutoff}{cutoff for Basecall of the fastq. Default: 0.05}
 
@@ -19,5 +33,5 @@ read.ab1(filename, cutoff = 0.05, min_seq_len = 20, offset = 33)
 Objekt with all information genename,bnummer,filename,abif,fastq.
 }
 \description{
-This function reads in a given abi1-file
+This function reads in a given abi1-file.
 }

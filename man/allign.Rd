@@ -2,7 +2,7 @@
 % Please edit documentation in R/allign.R
 \name{allign}
 \alias{allign}
-\title{allign module}
+\title{This function loads the reference for a given SangeR object}
 \usage{
 allign(SangeR)
 }
