@@ -57,15 +57,15 @@ allign <- function(SangeR){
 
       #find positions
 
-      if(SangeR$ref_pos$strand == -1) {
+      if(SangeR$strand == "forward") {
 
-        #mutation position for - strand
+        #mutation position for forward strand
         mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
 
       } else {
 
-        #mutation position for + strand
-        mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut + SangeR$upstream + 1)
+        #mutation position for reward strand
+        mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - 1)
       }
       chr_pos <- strsplit(mutpos,":")[[1]][2]
 
@@ -73,28 +73,31 @@ allign <- function(SangeR){
       if(any((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))) {
 
         #write tag for protein region
-        if(SangeR$ref_pos$strand == -1){
-
-          #for reverse strand
-
-          pos <- (((as.numeric(SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)])-as.numeric(chr_pos)-3) + sum(SangeR$pep_info$length[(which(((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)))+1):length(SangeR$pep_info$length)]))/3)
-
-          SangeR$pep_info$exon_chrom_start
-          SangeR$pep_info$exon_chrom_end
-
-          sum(SangeR$pep_info$exon_chrom_end - SangeR$pep_info$exon_chrom_start)
-
-          Aa <- stringr::str_sub(SangeR$reaf_amino$peptide, SangeR$align@subject@mismatch[[1]][cnt])
-          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
-          tags <- c(tags, paste0(Aa, Aa_mut))
-
-        }else{
+        if(SangeR$strand == "forward"){
 
           #for forward strand
 
-          Aa <- stringr::str_sub(SangeR$reaf_amino$peptide, SangeR$align@subject@mismatch[[1]][cnt])
+          boolean <- (SangeR$pep_info$exon_chrom_end<chr_pos)
+          boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+
+          AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
+
+          Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
           Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
-          tags <- c(tags, paste0(Aa, Aa_mut))
+          tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
+
+        }else{
+
+          #for reverse strand
+
+          boolean <- (SangeR$pep_info$exon_chrom_end>chr_pos)
+          boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+
+          AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]) - as.numeric(chr_pos))/3)
+
+          Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
+          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
+          tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
         }
 
       } else {

@@ -36,9 +36,9 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   SangeR$ref_pos <- biomaRt::getBM(c("hgnc_symbol","chromosome_name","start_position","end_position","strand"), "hgnc_symbol", SangeR$genename, mart)
 
   #pepitde informations
-  pep_info <- biomaRt::getBM(values = strsplit(SangeR$ref_amino$refseq_peptide,split = ";")[[1]][1], "refseq_peptide", attributes = c("chromosome_name","cdna_coding_start","cdna_coding_end"), mart = mart)
+  pep_info <- biomaRt::getBM(values = strsplit(SangeR$ref_amino$refseq_peptide,split = ";")[[1]][1], "refseq_peptide", attributes = c("chromosome_name","cdna_coding_start","cdna_coding_end","exon_chrom_start","exon_chrom_end"), mart = mart)
   SangeR$pep_info <- pep_info[order(pep_info$cdna_coding_start),]
-  SangeR$pep_info$length <- (SangeR$pep_info$cdna_coding_end - SangeR$pep_info$cdna_coding_start)
+  SangeR$pep_info$length <- (SangeR$pep_info$cdna_coding_end - SangeR$pep_info$cdna_coding_start) + 1
 
   #controll if gene could be found
 
