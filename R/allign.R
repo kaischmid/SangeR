@@ -26,12 +26,14 @@ allign <- function(SangeR){
 
     SangeR$abi_align <- abi_align_forward
     SangeR$mart_align <- mart_align_forward
+    SangeR$align_seq <- Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron)
     SangeR$strand <- "forward"
 
   } else {
 
     SangeR$abi_align <- abi_align_reverse
     SangeR$mart_align <- mart_align_reverse
+    SangeR$align_seq <- Biostrings::reverseComplement(Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron))
     SangeR$strand <- "reverse"
 
   }
@@ -53,7 +55,7 @@ allign <- function(SangeR){
     cnt <- 1
     tags <- c()
 
-    for(mut in SangeR$mutations_ref[[1]]){
+      for(mut in SangeR$mutations_ref[[1]]){
 
       #find positions
 
@@ -82,8 +84,10 @@ allign <- function(SangeR){
 
           AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
 
-          Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
-          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
+          exchange <- heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+
+          Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+
           tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
 
         }else{
@@ -96,14 +100,18 @@ allign <- function(SangeR){
           AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]) - as.numeric(chr_pos))/3)
 
           Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
-          Aa_mut <- stringr::str_sub(sequence, SangeR$align@pattern@mismatch[[1]][cnt], SangeR$align@pattern@mismatch[[1]][cnt])
+
+          exchange <- heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+
+          Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+
           tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
         }
 
       } else {
 
         #write tag for off-region
-        base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
+        base <- stringr::str_sub(SangeR$align@subject@metadata, mut, mut)
         mutation <- stringr::str_sub(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)
         tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mutation))
 
