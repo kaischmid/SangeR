@@ -18,13 +18,21 @@ It provides you different ways to use it.
 ## Required R Packages
 
   -sangerseqR
+  
   -biomaRt
+  
   -stringr
+  
   -ggplot2
+  
   -reshape2
+  
   -CrispRVariants
+  
   -Biostrings
+  
   -seqinr
+  
   -shiny
   
 ## Installation
