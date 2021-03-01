@@ -11,13 +11,22 @@ It provides you different ways to use it.
 
 ## Required Software
 
-  - R
+  - R (ist 3.4.1 or newer)
 
   - [Nextflow](https://www.nextflow.io) (19.10 or newer)
 
 ## Required R Packages
 
-
+  -sangerseqR
+  -biomaRt
+  -stringr
+  -ggplot2
+  -reshape2
+  -CrispRVariants
+  -Biostrings
+  -seqinr
+  -shiny
+  
 ## Installation
 Please install the dependencies and run
 ```
@@ -55,7 +64,6 @@ The pipeline gathers the necessary reference data on demand from online resource
 #### Offline
 The pipeline needs a prepared local reference database for the offline use.
 
--
 -
 -
 
@@ -101,4 +109,4 @@ Copyright(c)2020 Kai Schmid and Daniel Amsel (employees of the Justus Liebig Uni
 
 
 # SEE ALSO
-[Docker image on DockerHub]
+[Docker image on DockerHub](https://hub.docker.com/repository/docker/kaischmid/sange_r)
