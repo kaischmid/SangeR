@@ -17,23 +17,23 @@ It provides you different ways to use it.
 
 ## Required R Packages
 
-  -sangerseqR
+  - sangerseqR
   
-  -biomaRt
+  - biomaRt
   
-  -stringr
+  - stringr
   
-  -ggplot2
+  - ggplot2
   
-  -reshape2
+  - reshape2
   
-  -CrispRVariants
+  - CrispRVariants
   
-  -Biostrings
+  - Biostrings
   
-  -seqinr
+  - seqinr
   
-  -shiny
+  - shiny
   
 ## Installation
 Please install the dependencies and run
@@ -94,6 +94,8 @@ First clone the repository to your machine:
 `git clone https://github.com/kaischmid/SangeR.git`
 
 Then run the following command:
+
+`./main.nf `
 
 
 ## CAVEATS
