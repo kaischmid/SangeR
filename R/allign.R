@@ -43,7 +43,9 @@ allign <- function(SangeR){
   #use only common shared mismatches between abi file and the fasta base call
 
   SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  if(SangeR$param == "default"){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
   SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+  if(SangeR$param == "default"){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
   SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
