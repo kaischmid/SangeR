@@ -2,6 +2,10 @@
 
 ab1 = Channel.watchPath( './data/*.ab1', 'create,modify' )
 
+//script load
+sanger_script = file('/home/dir/scripts/R/sanger.R')
+
+
 process histgram {
 
   container 'kaischmid/sange_r'
@@ -10,12 +14,12 @@ process histgram {
 
   input:
   file ab1 from ab1
+  file(sanger_script)
 
   output:
 
-
   """
-  Rscript $workflow.projectDir/scripts/Sanger.R $ab1
+  ./sanger_script $ab1
 
   """
 
