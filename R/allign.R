@@ -43,9 +43,9 @@ allign <- function(SangeR){
   #use only common shared mismatches between abi file and the fasta base call
 
   SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
-  if(SangeR$param == "default"){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
+  if(SangeR$param != "default"){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
   SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
-  if(SangeR$param == "default"){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
+  if(SangeR$param != "default"){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
   SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
@@ -86,8 +86,8 @@ allign <- function(SangeR){
 
           AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
 
-          exchange <- heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
-
+          exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
           Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
 
           tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
@@ -103,7 +103,8 @@ allign <- function(SangeR){
 
           Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
 
-          exchange <- heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+          exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
 
           Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
 

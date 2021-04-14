@@ -32,7 +32,7 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 2, genename_pos = 1, cu
 
   #extrat genename
 
-  genename <- strsplit(ids, "_")[[1]][genename_pos]
+  genename <- strsplit(ids, delimiter)[[1]][genename_pos]
   genename <- gsub('[[:lower:]]', '', genename)
 
   #tranfer to fasta
@@ -50,7 +50,7 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 2, genename_pos = 1, cu
 
   #param meter of read in
 
-  if(cutoff == 0.05 %% min_seq_len == 20 && offset = 33){param <- "default"
+  if(cutoff == 0.05 && min_seq_len == 20 && offset == 33){param <- "default"
 }else {param <- c(cutoff, min_seq_len, offset)}
 
   object <- function(g,b,f,a,fa,p) {

@@ -63,7 +63,7 @@ plot_hist <- function(SangeR, POI = NULL){
     for(mut in SangeR$mutations_ref){
 
       #mutation position in abifile
-      pos <- mut - SangeR$abi_align@subject@range@start
+      pos <- mut - SangeR$abi_align@subject@range@start + 1
 
       #check if position is on the borders of the sequenz
       if(pos > 6 && pos < (length(basecalls$position)-5)){
