@@ -72,7 +72,7 @@ make_mart <- function(genename, upstream = 500, host = "grch37.ensembl.org", dat
 
   mart_save <- c()
 
-  mart$upstream <- upstream
+  mart_save$upstream <- upstream
 
   #get reference sequence
   mart_save$ref_seq <- biomaRt::getSequence(id = genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
