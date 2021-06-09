@@ -18,9 +18,9 @@ get_ref_routine <- function(SangeR, mart = "default"){
 
   #load mart file
   if(mart == "default"){
-    mart <- load(paste0("./data/", SangeR$genename, ".mart"))
+    load(paste0("./data/", SangeR$genename, ".mart"))
   } else{
-    mart <- load(mart)
+    load(mart)
   }
 
   #write upstream to SangeR object

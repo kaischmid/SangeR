@@ -7,8 +7,8 @@
 read.ab1(
   filename,
   delimiter = "_",
-  ID_pos = 2,
-  genename_pos = 1,
+  ID_pos = 1,
+  genename_pos = 2,
   cutoff = 0.05,
   min_seq_len = 20,
   offset = 33

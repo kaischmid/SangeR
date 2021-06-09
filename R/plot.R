@@ -3,7 +3,7 @@
 #' @title This function produces plots for all containing tags
 #'
 #' @param SangeR object from allign function.
-#' @param POI list of points of interesst
+#' @param poi file with list of points of interest
 #'
 #' @return Objekt with plots for the given tags
 #'
@@ -14,7 +14,7 @@
 #global Variables
 globalVariables(c("position","Values","Samples"))
 
-plot_hist <- function(SangeR, POI = NULL){
+plot_hist <- function(SangeR, poi = NULL){
 
   #chromatogramm
 
@@ -37,16 +37,23 @@ plot_hist <- function(SangeR, POI = NULL){
   if (!is.null(POI)){
 
     POI <- utils::read.table(POI)
+    SangeR$tags_POI <- c()
 
     for(point in unlist(POI)){
+
       chr <- as.numeric(strsplit(point,":")[[1]][1])
       pos <- as.numeric(strsplit(point,":")[[1]][2])
-      end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream,SangeR$ref_pos$end_position)
-      start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream,SangeR$ref_pos$start_position)
-        if(chr == SangeR$ref_pos$chromosome_name && pos < end && pos > SangeR $ref_pos$start_position && !any(as.numeric(substr(point,nchar(point)-2,nchar(point))) == substr(SangeR$tags,2,4))){
-          tag <- paste0(substr(point,nchar(point)-2,nchar(point)),"wt")
-          SangeR$tags <- c(SangeR$tags, tag)
+      end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream+1,SangeR$ref_pos$end_position-1)
+      start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream-1,SangeR$ref_pos$start_position+1)
+
+      if(chr == SangeR$ref_pos$chromosome_name && pos < end && pos > SangeR $ref_pos$start_position){
+
+          tag <- paste0(substr(SangeR$ref_seq$gene_exon_intron,end-pos,end-pos),substr(point,nchar(point)-2,nchar(point)),"wt")
+          SangeR$tags_POI <- c(SangeR$tags_POI, tag)
+          SangeR$mutations_ref_POI <- c(SangeR$mutations_ref, end - pos)
+          SangeR$tags <- unique(c(SangeR$tags, tag))
           SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
+
         }
     }
   }
@@ -92,10 +99,13 @@ plot_hist <- function(SangeR, POI = NULL){
       }
       cnt <- cnt+1
     }
+    SangeR$PNG_list <- PNG_list
   }  else{
 
     print("no mutations")
 
   }
-  return(PNG_list)
+
+
+  return(SangeR)
 }

@@ -114,7 +114,7 @@ allign <- function(SangeR){
       } else {
 
         #write tag for off-region
-        base <- stringr::str_sub(SangeR$align@subject@metadata, mut, mut)
+        base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
         mutation <- stringr::str_sub(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)
         tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mutation))
 

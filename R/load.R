@@ -16,7 +16,7 @@
 
 
 
-read.ab1 <- function(filename, delimiter = "_", ID_pos = 2, genename_pos = 1, cutoff = 0.05, min_seq_len = 20, offset = 33){
+read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
 
 
@@ -34,6 +34,7 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 2, genename_pos = 1, cu
 
   genename <- strsplit(ids, delimiter)[[1]][genename_pos]
   genename <- gsub('[[:lower:]]', '', genename)
+  genename <- gsub('-','',genename)
 
   #tranfer to fasta
 
