@@ -1,3 +1,10 @@
+
+<p align="right">
+  <img src="sanger_logo.png" alt="SangeR logo"/>
+</p>
+
+-----
+
 # SangeR
 
 Welcome to the git repository of the `SangeR`, the program that makes sanger sequencing analysis high-throughput.
