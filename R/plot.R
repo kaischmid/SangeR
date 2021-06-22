@@ -14,7 +14,7 @@
 #global Variables
 globalVariables(c("position","Values","Samples"))
 
-plot_hist <- function(SangeR, poi = NULL){
+plot_hist <- function(SangeR, POI = NULL){
 
   #chromatogramm
 

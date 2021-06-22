@@ -30,11 +30,12 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cu
 
   Bnummer <- strsplit(ids, delimiter)[[1]][ID_pos]
 
-  #extrat genename
+  #extract genename
 
   genename <- strsplit(ids, delimiter)[[1]][genename_pos]
   genename <- gsub('[[:lower:]]', '', genename)
   genename <- gsub('-','',genename)
+
 
   #tranfer to fasta
 
