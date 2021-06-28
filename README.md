@@ -5,8 +5,6 @@
 
 -----
 
-# SangeR
-
 Welcome to the git repository of the `SangeR`, the program that makes sanger sequencing analysis high-throughput.
 
 It provides you different ways to use it.
