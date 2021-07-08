@@ -41,16 +41,11 @@ It provides you different ways to use it.
   - shiny
   
 ## Installation
-Please install the dependencies and run
+You can install the package through devtools
 ```
-git clone -b v1.0.0 https://github.com/kaischmid/SangeR.git
+install_github("https://github.com/kaischmid/SangeR", auth_token = "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")
 ```
-or download the latest release as `*.tar.gz` or `*.zip` file:
-```
-curl -L -o .tar.gz
-# or
-curl -L -o .zip
-```
+
 
 ## Docker
 We also provide `SangeR` as [DOCKER image](https://hub.docker.com/r/kaischmid/sange_r). We tested the image on Ubuntu and MacOS. 
