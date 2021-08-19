@@ -38,7 +38,7 @@ ui <- shiny::fluidPage(
                   label = "genename Position:",
                   min = 1,
                   max = 5,
-                  value = 2),
+                  value = 1),
 
       # Input: Select a POI
       shiny::fileInput("file2", "Choose POI File",
