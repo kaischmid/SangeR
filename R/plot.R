@@ -82,16 +82,16 @@ plot_hist <- function(SangeR, POI = NULL){
         #print plot
         plot <- ggplot2::ggplot(ROI_melt, ggplot2::aes(position, Values)) +
                   ggplot2::scale_x_continuous(breaks = data$position[!is.na(data$basecall)], labels =  data$basecall[!is.na(data$basecall)]) +
-                  ggplot2::geom_line(ggplot2::aes(color=as.factor(Samples))) +
+                  ggplot2::geom_line(ggplot2::aes(color=as.factor(Samples)),size = 1) +
                   ggplot2::scale_color_discrete(name = "nucleotide") +
                   ggplot2::labs(title = paste0(SangeR$genename, " ", SangeR$tags[cnt])) +
                   ggplot2::theme_bw() +
-                  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,))
+                  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size = 16))
 
         #write plot to file
-        #grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"), width = 1200)
-        #print(plot)
-        #dev.off()
+        grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"), width = 1200)
+        print(plot)
+        dev.off()
         PNG_list[[cnt]] <- plot
 
       } else{
