@@ -11,12 +11,12 @@ It provides you different ways to use it.
 
 1. You can use the R package to use it your own way.
 
-2. For high-troughput you can use the Nextflow script which utilizes the docker container.
+2. For high-troughput you can use the [Nextflow](https://www.nextflow.io/) script which utilizes the [Docker](https://www.docker.com/) container.
 
 
 ## Required Software
 
-  - R (ist 3.4.1 or newer)
+  - [R](https://www.r-project.org/) (ist 3.4.1 or newer)
 
   - [Nextflow](https://www.nextflow.io) (19.10 or newer)
 
@@ -32,6 +32,7 @@ It provides you different ways to use it.
   
   - reshape2
   
+
   - CrispRVariants
   
   - Biostrings
@@ -41,10 +42,20 @@ It provides you different ways to use it.
   - shiny
   
 ## Installation
-You can install the package through devtools
+You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
 ```
-install_github("https://github.com/kaischmid/SangeR", auth_token = "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")
+$ sudo apt update && apt install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
+
+# takes about 5:30 minutes
+$ R -e 'install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"))'
+
+# takes about 10 minutes
+$ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))'
+
+# takes about
+$ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR", auth_token = "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")'
 ```
+Hint: `$` assumes a BASH prompt.
 
 
 ## Docker
