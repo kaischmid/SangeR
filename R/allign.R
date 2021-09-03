@@ -64,7 +64,11 @@ allign <- function(SangeR){
       if(SangeR$strand == "forward") {
 
         #mutation position for forward strand
-        mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
+
+        #idh1
+        #mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
+
+        mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - SangeR$upstream - 1)
 
       } else {
 
@@ -81,19 +85,37 @@ allign <- function(SangeR){
 
           #for forward strand
 
-          boolean <- (SangeR$pep_info$exon_chrom_end<chr_pos)
-          boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+          boolean <- (SangeR$pep_info$exon_chrom_start<chr_pos)
 
-          AA_pos <- ceiling((sum(SangeR$pep_info$length[!boolean],na.rm = TRUE) - (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
+          AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean],na.rm = TRUE) - (SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)] - as.numeric(chr_pos)))/3)
 
           Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
 
-          exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
-            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+          exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G","N")){
+
+            heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+          }else {
+
+            substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
 
           Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
 
           tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
+
+          #IDH1
+          # boolean <- (SangeR$pep_info$exon_chrom_end<chr_pos)
+          # boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+          #
+          # AA_pos <- ceiling((sum(SangeR$pep_info$length[!boolean],na.rm = TRUE) - (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
+          #
+          # Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
+          #
+          # exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+          #   }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+          #
+          # Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+          #
+          # tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
 
         }else{
 
