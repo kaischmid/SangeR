@@ -96,18 +96,18 @@ The pipeline needs a prepared local reference database for the offline use.
 
 The following parameters can be set:
 
-  -filename: location of a ab1 file.
-  -delimiter: delimiter in genename/ID of ab1 file
-  -ID_pos: position of ID in genename/ID of ab1 file
-  -genename_pos: position of genename in genename/ID of ab1 file
-  -cutoff: cutoff for Basecall of the fastq. Default: 0.05
-  -min_seq_len: minimum sequence length for Basecall of the fastq. Default: 20
-  -offset: Offset for Basecall of the fastq. Default: 33
-  -upstream: region before gene to be loaded into ref_seq
-  -host: Host to connect to. Defaults to grch37.ensembl.or
-  -dataset: Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart("ensembl"), followed by listDatasets(mart). Default: hsapiens_gene_ensembl
-  -biomart: BioMart database name you want to connect to. Possible database names can be retrieved with the function listMarts. Default: ensembl
-  -POI: file with list of points of interest
+  - filename: location of a ab1 file.
+  - delimiter: delimiter in genename/ID of ab1 file
+  - ID_pos: position of ID in genename/ID of ab1 file
+  - genename_pos: position of genename in genename/ID of ab1 file
+  - cutoff: cutoff for Basecall of the fastq. Default: 0.05
+  - min_seq_len: minimum sequence length for Basecall of the fastq. Default: 20
+  - offset: Offset for Basecall of the fastq. Default: 33
+  - upstream: region before gene to be loaded into ref_seq
+  - host: Host to connect to. Defaults to grch37.ensembl.or
+  - dataset: Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart("ensembl"), followed by listDatasets(mart). Default: hsapiens_gene_ensembl
+  - biomart: BioMart database name you want to connect to. Possible database names can be retrieved with the function listMarts. Default: ensembl
+  - POI: file with list of points of interest
 
 
 
