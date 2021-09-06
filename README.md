@@ -40,6 +40,8 @@ It provides you different ways to use it.
   - seqinr
   
   - shiny
+
+  - gridExtra
   
 ## Installation
 You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
@@ -76,24 +78,47 @@ We divided the pipeline into an online and an offline mode.
 #### Online
 The pipeline gathers the necessary reference data on demand from online resources, but needs a stable internet connection.
 
--
--
--
+- In this case you only have to provied the ab1 file which is supposed to be analyzed
+
+- optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
+
 
 #### Offline
 The pipeline needs a prepared local reference database for the offline use.
 
--
--
+- In this case you only have to provied the ab1 file which is supposed to be analyzed
+
+- Additional you have to provide the needed mart ressources for the genes you want to analyze
+
+- optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
 
 ### PARAMETERS
 
 The following parameters can be set:
 
+-filename: location of a ab1 file.
+-delimiter: delimiter in genename/ID of ab1 file
+-ID_pos: position of ID in genename/ID of ab1 file
+-genename_pos: position of genename in genename/ID of ab1 file
+-cutoff: cutoff for Basecall of the fastq. Default: 0.05
+-min_seq_len: minimum sequence length for Basecall of the fastq. Default: 20
+-offset: Offset for Basecall of the fastq. Default: 33
+-upstream: region before gene to be loaded into ref_seq
+-host: Host to connect to. Defaults to grch37.ensembl.or
+-dataset: Dataset you want to use. To see the different datasets available within a biomaRt you can e.g. do: mart = useMart("ensembl"), followed by listDatasets(mart). Default: hsapiens_gene_ensembl
+-biomart: BioMart database name you want to connect to. Possible database names can be retrieved with the function listMarts. Default: ensembl
+-POI: file with list of points of interest
+
+
+
 
 ### OUTPUT
 
 The pipeline generates the following output:
+
+- a Histogramm for each mutated position/selected POI
+
+ -a .csv with the found mutations for all given files
 
 
 ### Example
