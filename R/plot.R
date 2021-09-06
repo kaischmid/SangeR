@@ -3,7 +3,7 @@
 #' @title This function produces plots for all containing tags
 #'
 #' @param SangeR object from allign function.
-#' @param poi file with list of points of interest
+#' @param POI file with list of points of interest
 #'
 #' @return Objekt with plots for the given tags
 #'
@@ -11,10 +11,12 @@
 #'
 
 
-#global Variables
-globalVariables(c("position","Values","Samples"))
 
-plot_hist <- function(SangeR, POI = NULL){
+plot_hist <- function(SangeR, POI){
+
+  #global Variables
+  position <- Values <- Samples <- NULL
+
 
   #chromatogramm
 
@@ -34,7 +36,7 @@ plot_hist <- function(SangeR, POI = NULL){
 
   #points of interest
 
-  if (!is.null(POI)){
+  if (!missing(POI)){
 
     POI <- utils::read.table(POI)
     SangeR$tags_POI <- c()
@@ -60,7 +62,7 @@ plot_hist <- function(SangeR, POI = NULL){
 
   #region of interest
 
-  if(length(SangeR$mutations_ref) != 0L){
+  if(length(SangeR$mutations_ref) != 0){
 
     #create counter and create vat for used file paths
 
@@ -69,10 +71,10 @@ plot_hist <- function(SangeR, POI = NULL){
 
     for(mut in SangeR$mutations_ref){
 
-      #mutation position in abifile
+      #mutation position in abi1 file
       pos <- mut - SangeR$abi_align@subject@range@start + 1
 
-      #check if position is on the borders of the sequenz
+      #check if position is on the borders of the sequence
       if(pos > 6 && pos < (length(basecalls$position)-5)){
 
         #Pick region of interest
@@ -88,21 +90,17 @@ plot_hist <- function(SangeR, POI = NULL){
                   ggplot2::theme_bw() +
                   ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5,size = 16))
 
-        #write plot to file
-        grDevices::png(file = paste0("Chromatogramm_", SangeR$Bnummer, "_", SangeR$genename,"_",SangeR$tags[cnt],".png"), width = 1200)
-        print(plot)
-        dev.off()
+        #write plot to plot_list
         PNG_list[[cnt]] <- plot
+        cnt <- cnt+1
 
-      } else{
-        print("no mutations")
       }
-      cnt <- cnt+1
     }
     SangeR$PNG_list <- PNG_list
   }  else{
 
     print("no mutations")
+    SangeR$PNG_list <- NULL
 
   }
 

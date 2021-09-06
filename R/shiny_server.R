@@ -1,16 +1,12 @@
-#' @name  shiny_server
-#'
-#' @title  This functions produce a Rshiny server interface
-#'
-#' @export
-#'
-
 library(gridExtra)
 
 #' @name ui
 #' @title User Interface
 #' @export
 #'
+
+
+
 # Define UI for SangeR app
 ui <- shiny::fluidPage(
 
@@ -107,6 +103,8 @@ ui <- shiny::fluidPage(
 #' @param input input for shiny ui
 #' @param output output from shiny ui
 #' @export
+#'
+
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
@@ -117,10 +115,17 @@ server <- function(input, output) {
     if(!is.null(input$file1)){
       histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, delimiter = input$delimiter, genename_pos = input$genename_pos, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)))
 
-      do.call("grid.arrange", c(histograms$PNG_list, ncol=1))
+      if(!is.null(histograms$PNG_list)){
+        do.call("grid.arrange", c(histograms$PNG_list, ncol=1))
+      }
     }
+    shiny::validate(
+      shiny::need(!is.null(histograms$PNG_list), "Could not find any mutations. Check in for a POI or less strict parameters.")
+    )
 
   })
+
+
 
   output$distPlot <- shiny::renderPlot({
 
@@ -135,7 +140,7 @@ server <- function(input, output) {
     content = function(file) {
       grDevices::png(file)
       print(plotInput())
-      dev.off()
+      grDevices::dev.off()
     })
 
 }

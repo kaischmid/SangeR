@@ -5,12 +5,14 @@
 \alias{print_plots}
 \title{This function produces plots for all containing tags}
 \usage{
+plot_hist(SangeR, POI)
+
 print_plots(SangeR)
 }
 \arguments{
 \item{SangeR}{object from plot_hist function.}
 
-\item{poi}{file with list of points of interest}
+\item{POI}{file with list of points of interest}
 }
 \value{
 Objekt with plots for the given tags
