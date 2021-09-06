@@ -12,10 +12,6 @@
 #'
 #' @export
 
-
-#global Variables
-globalVariables(c("exit"))
-
 get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset = "hsapiens_gene_ensembl", biomart = "ensembl"){
 
   #define mart
@@ -26,6 +22,12 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
 
   #get reference sequence
   SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
+
+  #controll if gene could be found
+
+  if(length(SangeR$ref_seq$gene_exon_intron) == 0) {
+    stop(paste0("Gene could not been found, please verify that the gene name is correct\nYou entered the genename: ",SangeR$genename))
+  }
 
   #ref aminoacid sequence
   temp_aminoacid <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = c("peptide","refseq_peptide","end_position","start_position"))
@@ -41,13 +43,6 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   SangeR$pep_info <- pep_info[order(pep_info$cdna_coding_start),]
   SangeR$pep_info$length <- (SangeR$pep_info$cdna_coding_end - SangeR$pep_info$cdna_coding_start) + 1
 
-  #controll if gene could be found
-
-  if(length(SangeR$ref_seq$gene_exon_intron) == 0) {
-    print("Gene could not been found, please verify that the gene name is correct")
-    exit()
-  }
-  SangeR$upstream <- upstream
 
   #return
   return(SangeR)

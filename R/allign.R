@@ -43,9 +43,9 @@ allign <- function(SangeR){
   #use only common shared mismatches between abi file and the fasta base call
 
   SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
-  if(SangeR$param != "default"){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
+  if(!is.null(SangeR$param)){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
   SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
-  if(SangeR$param != "default"){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
+  if(!is.null(SangeR$param)){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
   SangeR$align <- SangeR$mart_align
 
   #combine tag elements for each string
@@ -65,15 +65,22 @@ allign <- function(SangeR){
 
         #mutation position for forward strand
 
-        #idh1
-        #mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
-
-        mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - SangeR$upstream - 1)
+        if(SangeR$ref_pos$strand == -1){
+          mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$end_position - mut + SangeR$upstream + 1)
+        } else{
+          mutpos <- paste0("chr", SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - SangeR$upstream - 1)
+        }
 
       } else {
 
         #mutation position for reward strand
-        mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - 1)
+
+        if(SangeR$ref_pos$strand == -1){
+          mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - 1)
+        } else {
+          mutpos <- paste0("chr",SangeR$ref_pos$chromosome_name,":", SangeR$ref_pos$start_position + mut - 1)
+        }
+
       }
       chr_pos <- strsplit(mutpos,":")[[1]][2]
 

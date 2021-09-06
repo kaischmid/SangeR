@@ -52,7 +52,7 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cu
 
   #param meter of read in
 
-  if(cutoff == 0.05 && min_seq_len == 20 && offset == 33){param <- "default"
+  if(cutoff == 0.05 && min_seq_len == 20 && offset == 33){param <- NULL
 }else {param <- c(cutoff, min_seq_len, offset)}
 
   object <- function(g,b,f,a,fa,p) {

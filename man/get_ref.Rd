@@ -3,6 +3,15 @@
 \name{get_ref}
 \alias{get_ref}
 \title{This function loads the reference for a given SangeR object}
+\usage{
+get_ref(
+  SangeR,
+  upstream = 500,
+  host = "grch37.ensembl.org",
+  dataset = "hsapiens_gene_ensembl",
+  biomart = "ensembl"
+)
+}
 \arguments{
 \item{SangeR}{object from read.ab1() function.}
 
