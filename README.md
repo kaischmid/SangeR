@@ -116,9 +116,9 @@ The following parameters can be set:
 
 The pipeline generates the following output:
 
-- a Histogramm for each mutated position/selected POI
+  - a Histogramm for each mutated position/selected POI
 
- -a .csv with the found mutations for all given files
+  - a .csv with the found mutations for all given files
 
 
 ### Example
