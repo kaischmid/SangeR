@@ -16,7 +16,7 @@ It provides you different ways to use it.
 
 ## Required Software
 
-  - [R](https://www.r-project.org/) (ist 3.4.1 or newer)
+  - [R](https://www.r-project.org/) (ist 4.0.1 or newer)
 
   - [Nextflow](https://www.nextflow.io) (19.10 or newer)
 
