@@ -83,8 +83,8 @@ ui <- shiny::fluidPage(
         choices = c("grch37.ensembl.org","www.ensembl.org"),
       ),
 
-      #donwload button
-      shiny::downloadButton('downloadPlot', 'Download Plot')
+      #download button
+      shiny::downloadButton(outputId = "down", label = "Download Chromatogramm")
 
     ),
 
@@ -119,9 +119,9 @@ server <- function(input, output) {
         do.call("grid.arrange", c(histograms$PNG_list, ncol=1))
       }
     }
-    shiny::validate(
-      shiny::need(!is.null(histograms$PNG_list), "Could not find any mutations. Check in for a POI or less strict parameters.")
-    )
+    #shiny::validate(
+    #  shiny::need(!is.null(histograms$PNG_list), "Could not find any mutations. Check in for a POI or less strict parameters.")
+    #)
 
   })
 
@@ -130,19 +130,19 @@ server <- function(input, output) {
   output$distPlot <- shiny::renderPlot({
 
     if(!is.null(input$file1)){
-      print(plotInput())
+      gg <- print(plotInput())
+      print(gg)
     }
   })
 
-  #download of png
-  output$downloadPlot <- shiny::downloadHandler(
-    filename = "Shinyplot.png",
-    content = function(file) {
-      grDevices::png(file)
-      print(plotInput())
-      grDevices::dev.off()
-    })
 
+  #download of png
+  output$down <- downloadHandler(
+    filename = "test.png",
+    content = function(file){
+
+      ggplot2::ggsave(file, plot = plotInput(),device = "png",width = 20)
+    })
 }
 
 # Create Shiny app ----

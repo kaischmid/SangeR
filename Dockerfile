@@ -1,5 +1,5 @@
 ARG baseimage_version=v1.0
-FROM ubuntu:20.04
+FROM r-base
 
 ARG SangeR=1.0
 
