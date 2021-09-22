@@ -23,7 +23,21 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
   #get reference sequence
   try(SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream), silent = TRUE)
 
-  #controll if gene could be found
+  #control if gene could be found
+
+  if(length(SangeR$ref_seq$gene_exon_intron) == 0){
+    cnt <- 1
+    while(length(SangeR$ref_seq$gene_exon_intron) == 0 | cnt < 5) {
+      genename <- strsplit(SangeR$ids, SangeR$delimiter)[[1]][cnt]
+      genename <- gsub('[[:lower:]]', '', genename)
+      genename <- gsub('-','',genename)
+      SangeR$genename <- genename
+      print(genename)
+      print(length(SangeR$ref_seq$gene_exon_intron))
+      SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
+      cnt <- cnt +1
+    }
+  }
 
   if(length(SangeR$ref_seq$gene_exon_intron) == 0) {
     stop(paste0("Gene could not been found, please verify that the gene name is correct\nYou entered the genename: ",SangeR$genename))

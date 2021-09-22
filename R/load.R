@@ -55,14 +55,14 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cu
   if(cutoff == 0.05 && min_seq_len == 20 && offset == 33){param <- NULL
 }else {param <- c(cutoff, min_seq_len, offset)}
 
-  object <- function(g,b,f,a,fa,p) {
-    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa, param=p)
+  object <- function(g,b,f,a,fa,p,i,d) {
+    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa, param=p, ids=i, delimiter=d)
     attr(value, "class") <- "SangeR"
     value
   }
 
 
   #return
-  return(object(genename,Bnummer,filename,abif,fastq,param))
+  return(object(genename,Bnummer,filename,abif,fastq,param,ids,delimiter))
 
 }
