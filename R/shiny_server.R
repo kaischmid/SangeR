@@ -29,17 +29,13 @@ ui <- shiny::fluidPage(
       shiny::textInput(inputId = "delimiter",
                        label = "delimiter in ab1 file", value = "_", placeholder = "_"),
 
-      # Input position of genename
-      shiny::sliderInput(inputId = "genename_pos",
-                  label = "genename Position:",
-                  min = 1,
-                  max = 5,
-                  value = 1),
 
-      # Input for
+      # Input for genename
       shiny::selectInput(inputId = "genename",
-                         label = "Genename",
-                         choices = unlist(c(read.csv2("./genenames.txt", header = FALSE, sep = ",")), use.names = FALSE), multiple =  FALSE),
+                         selected = "",
+                         label = "genename",
+
+                         choices = unlist(c(read.csv2("/home/kaischmid/github/SangeR/genenames.txt", header = FALSE, sep = ",")), use.names = FALSE), multiple =  FALSE),
 
       # Input: Select a POI
       shiny::fileInput("file2", "Choose POI File",
@@ -118,7 +114,7 @@ server <- function(input, output) {
   plotInput <- shiny::reactive({
 
     if(!is.null(input$file1)){
-      histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, delimiter = input$delimiter, genename_pos = input$genename_pos, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)))
+      histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, delimiter = input$delimiter, genename = input$genename, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)))
 
       if(!is.null(histograms$PNG_list)){
         do.call("grid.arrange", c(histograms$PNG_list, ncol=1))

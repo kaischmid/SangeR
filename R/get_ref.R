@@ -32,7 +32,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
       genename <- gsub('[[:lower:]]', '', genename)
       genename <- gsub('-','',genename)
       SangeR$genename <- genename
-      SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream)
+      try(SangeR$ref_seq <- biomaRt::getSequence(id = SangeR$genename, mart = mart, type = "hgnc_symbol", seqType = "gene_exon_intron", upstream = upstream), silent = TRUE)
       cnt <- cnt +1
     }
   }

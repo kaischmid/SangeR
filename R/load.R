@@ -5,6 +5,7 @@
 #' @param filename location of a ab1 file.
 #' @param delimiter delimiter in genename/ID of ab1 file
 #' @param ID_pos position of ID in genename/ID of ab1 file
+#' @param genename gene name of analysed gene in ab1 file
 #' @param genename_pos position of genename in genename/ID of ab1 file
 #' @param cutoff cutoff for Basecall of the fastq. Default: 0.05
 #' @param min_seq_len minimum sequence length for Basecall of the fastq. Default: 20
@@ -16,7 +17,7 @@
 
 
 
-read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cutoff = 0.05, min_seq_len = 20, offset = 33){
+read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename = "", genename_pos = 2,cutoff = 0.05, min_seq_len = 20, offset = 33){
 
   #read ab1file with sangerseqR
   abif <- sangerseqR::read.abif(filename = filename)
@@ -30,9 +31,11 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cu
 
   #extract genename
 
-  genename <- strsplit(ids, delimiter)[[1]][genename_pos]
-  genename <- gsub('[[:lower:]]', '', genename)
-  genename <- gsub('-','',genename)
+  if(genename == ""){
+    genename <- strsplit(ids, delimiter)[[1]][genename_pos]
+    genename <- gsub('[[:lower:]]', '', genename)
+    genename <- gsub('-','',genename)
+  } else {genename <- genename}
 
 
   #tranfer to fasta
