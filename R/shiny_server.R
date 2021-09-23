@@ -36,6 +36,11 @@ ui <- shiny::fluidPage(
                   max = 5,
                   value = 1),
 
+      # Input for
+      shiny::selectInput(inputId = "genename",
+                         label = "Genename",
+                         choices = unlist(c(read.csv2("./genenames.txt", header = FALSE, sep = ",")), use.names = FALSE), multiple =  FALSE),
+
       # Input: Select a POI
       shiny::fileInput("file2", "Choose POI File",
                 multiple = FALSE),
