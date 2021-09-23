@@ -18,8 +18,6 @@
 
 read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cutoff = 0.05, min_seq_len = 20, offset = 33){
 
-
-
   #read ab1file with sangerseqR
   abif <- sangerseqR::read.abif(filename = filename)
 
@@ -55,14 +53,14 @@ read.ab1 <- function(filename, delimiter = "_", ID_pos = 1, genename_pos = 2, cu
   if(cutoff == 0.05 && min_seq_len == 20 && offset == 33){param <- NULL
 }else {param <- c(cutoff, min_seq_len, offset)}
 
-  object <- function(g,b,f,a,fa,p,i,d) {
-    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa, param=p, ids=i, delimiter=d)
+  object <- function(g,b,f,a,fa,p,i,d,o,m,c) {
+    value <- list(genename=g, Bnummer=b, filename=f, abif=a, fastq=fa, param=p, ids=i, delimiter=d,offset=offset,min_seq_len=min_seq_len,cutoff=cutoff)
     attr(value, "class") <- "SangeR"
     value
   }
 
 
   #return
-  return(object(genename,Bnummer,filename,abif,fastq,param,ids,delimiter))
+  return(object(genename,Bnummer,filename,abif,fastq,param,ids,delimiter,offset,min_seq_len,cutoff))
 
 }

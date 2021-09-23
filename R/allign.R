@@ -11,6 +11,7 @@
 allign <- function(SangeR){
 
   #load sequence in variable
+
   sequence <- toString(SangeR$fastq[1])
 
   #allignments
@@ -47,6 +48,67 @@ allign <- function(SangeR){
   SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
   if(!is.null(SangeR$param)){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
   SangeR$align <- SangeR$mart_align
+
+  #more restrict filter if too many mutations have been found
+
+
+  while (length(SangeR$mutations_ref) > 5){
+
+    #change read in settings
+
+    #tranfer to fasta
+
+    file_name <- paste0(SangeR$Bnummer, "_", SangeR$genename, ".fastq")
+    SangeR$cutoff <- 0.021
+    invisible(CrispRVariants::abifToFastq(seqname = SangeR$filename, trim = TRUE, fname = SangeR$filename, outfname = file_name, cutoff = SangeR$cutoff, min_seq_len = SangeR$min_seq_len, offset = SangeR$offset))
+
+    #load fastq
+
+    SangeR$fastq <- Biostrings::readDNAStringSet(file_name, format = "fastq")
+
+    #clean up
+
+    file.remove(file_name)
+
+    sequence <- toString(SangeR$fastq[1])
+
+
+    #allignments
+
+    mart_align_forward <- Biostrings::pairwiseAlignment(subject = Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron), pattern = Biostrings::DNAString(sequence), type = "global-local")
+    abi_align_forward <- Biostrings::pairwiseAlignment(subject = Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron), pattern = Biostrings::DNAString(SangeR$abif@data$PBAS.1), type = "global-local")
+    mart_align_reverse <- Biostrings::pairwiseAlignment(subject = Biostrings::reverseComplement(Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron)), pattern = Biostrings::DNAString(sequence), type = "global-local")
+    abi_align_reverse <- Biostrings::pairwiseAlignment(subject = Biostrings::reverseComplement(Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron)), pattern = SangeR$abif@data$PBAS.1, type = "global-local")
+
+    #choose if sequence is on forward or reverse strand
+
+    if(mart_align_forward@score>=mart_align_reverse@score){
+
+      SangeR$abi_align <- abi_align_forward
+      SangeR$mart_align <- mart_align_forward
+      SangeR$align_seq <- Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron)
+      SangeR$strand <- "forward"
+
+    } else {
+
+      SangeR$abi_align <- abi_align_reverse
+      SangeR$mart_align <- mart_align_reverse
+      SangeR$align_seq <- Biostrings::reverseComplement(Biostrings::DNAString(SangeR$ref_seq$gene_exon_intron))
+      SangeR$strand <- "reverse"
+
+    }
+
+    #Mutation
+
+    #use only common shared mismatches between abi file and the fasta base call
+
+    SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+    if(!is.null(SangeR$param)){SangeR$mutations_ref <- SangeR$mart_align@subject@mismatch[[1]]}
+    SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]][SangeR$mart_align@subject@mismatch[[1]] %in% SangeR$abi_align@subject@mismatch[[1]]]
+    if(!is.null(SangeR$param)){SangeR$mutations_abi <- SangeR$mart_align@pattern@mismatch[[1]]}
+    SangeR$align <- SangeR$mart_align
+
+  }
 
   #combine tag elements for each string
 
