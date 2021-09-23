@@ -52,14 +52,14 @@ allign <- function(SangeR){
   #more restrict filter if too many mutations have been found
 
 
-  while (length(SangeR$mutations_ref) > 5){
+  if (length(SangeR$mutations_ref) > 5){
 
     #change read in settings
 
     #tranfer to fasta
 
     file_name <- paste0(SangeR$Bnummer, "_", SangeR$genename, ".fastq")
-    SangeR$cutoff <- 0.021
+    SangeR$cutoff <- 0.02
     invisible(CrispRVariants::abifToFastq(seqname = SangeR$filename, trim = TRUE, fname = SangeR$filename, outfname = file_name, cutoff = SangeR$cutoff, min_seq_len = SangeR$min_seq_len, offset = SangeR$offset))
 
     #load fastq
