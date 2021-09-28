@@ -109,6 +109,8 @@ ui <- shiny::fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
+
+
   # Histogram
 
   plotInput <- shiny::reactive({
@@ -116,15 +118,12 @@ server <- function(input, output, session) {
     if(!is.null(input$file1)){
       histograms <- sangeR::plot_hist(sangeR::allign(sangeR::get_ref(sangeR::read.ab1(filename = input$file1$datapath, delimiter = input$delimiter, genename = input$genename, cutoff = input$cutoff, min_seq_len = input$min_seq_len, offset = input$offset),upstream = input$upstream, host = input$host)))
 
-      if(!is.null(histograms$PNG_list)){
+      if(!length(histograms$PNG_list) == 0){
         do.call("grid.arrange", c(histograms$PNG_list, ncol=1))
-      }
+      } else {stop(paste0("Could not find any mutations. Check in for a POI or less strict parameters."))}
     }
-    #shiny::validate(
-    #  shiny::need(!is.null(histograms$PNG_list), "Could not find any mutations. Check in for a POI or less strict parameters.")
-    #)
-
   })
+
 
 
 
@@ -136,6 +135,8 @@ server <- function(input, output, session) {
     }
   })
 
+  shiny::observeEvent(eventExpr = "file1",{shinyjs::reset("genename")})
+
   #genename select
 
   updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE)
@@ -145,6 +146,7 @@ server <- function(input, output, session) {
                                       server = TRUE,
                                       choices = readRDS(system.file("data","genenames.rds",package = "sangeR")))
                })
+
 
 
   #download of png
