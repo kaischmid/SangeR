@@ -138,13 +138,12 @@ server <- function(input, output, session) {
 
   #genename select
 
-  updateSelectizeInput(session, "genename", choices = readRDS(file = "~/github/SangeR/data/genenames.rds"), server = T)
+  updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE)
   observeEvent(input$buttonid,
                {
                  updateSelectizeInput(session, "genename",
                                       server = TRUE,
-                                      choices = readRDS(file = "~/github/SangeR/data/genenames.rds"))
-
+                                      choices = readRDS(system.file("data","genenames.rds",package = "sangeR")))
                })
 
 
