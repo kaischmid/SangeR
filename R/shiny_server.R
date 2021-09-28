@@ -34,8 +34,8 @@ ui <- shiny::fluidPage(
       shiny::selectInput(inputId = "genename",
                          selected = "",
                          label = "genename",
-
-                         choices = unlist(c(read.csv2("/home/kaischmid/github/SangeR/genenames.txt", header = FALSE, sep = ",")), use.names = FALSE), multiple =  FALSE),
+                         multiple =  FALSE,
+                         choices = NULL),
 
       # Input: Select a POI
       shiny::fileInput("file2", "Choose POI File",
@@ -107,7 +107,7 @@ ui <- shiny::fluidPage(
 #'
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # Histogram
 
@@ -135,6 +135,17 @@ server <- function(input, output) {
       print(gg)
     }
   })
+
+  #genename select
+
+  updateSelectizeInput(session, "genename", choices = readRDS(file = "~/github/SangeR/data/genenames.rds"), server = T)
+  observeEvent(input$buttonid,
+               {
+                 updateSelectizeInput(session, "genename",
+                                      server = TRUE,
+                                      choices = readRDS(file = "~/github/SangeR/data/genenames.rds"))
+
+               })
 
 
   #download of png
