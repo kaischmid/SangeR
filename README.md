@@ -55,7 +55,7 @@ $ R -e 'install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr"
 $ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))'
 
 # takes about
-$ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR", auth_token = "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")'
+$ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR")'
 ```
 Hint: `$` assumes a BASH prompt.
 
