@@ -10,13 +10,13 @@ library(gridExtra)
 # Define UI for SangeR app
 ui <- shiny::fluidPage(
 
-  shinyUI(navbarPage('SangeR', id="page",
+  shiny::shinyUI(shiny::navbarPage('SangeR', id="page",
 
     #tool tab
     shiny::tabPanel("tool",
 
       # App title
-      shiny::titlePanel(shiny::tags$a(tags$img(src = "https://github.com/kaischmid/SangeR/raw/master/sanger_logo.png"))),
+      shiny::titlePanel(shiny::tags$a(shiny::tags$img(src = "https://github.com/kaischmid/SangeR/raw/master/sanger_logo.png"))),
 
       # Sidebar layout with input and output definitions
       shiny::sidebarLayout(
@@ -150,10 +150,10 @@ server <- function(input, output, session) {
 
   #genename select
 
-  updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE)
-  observeEvent(input$buttonid,
+  shiny::updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE)
+  shiny::observeEvent(input$buttonid,
                {
-                 updateSelectizeInput(session, "genename",
+                 shiny::updateSelectizeInput(session, "genename",
                                       server = TRUE,
                                       choices = readRDS(system.file("data","genenames.rds",package = "sangeR")))
                })
@@ -161,7 +161,7 @@ server <- function(input, output, session) {
 
 
   #download of png
-  output$down <- downloadHandler(
+  output$down <- shiny::downloadHandler(
     filename = "test.png",
     content = function(file){
 
@@ -170,16 +170,16 @@ server <- function(input, output, session) {
 
 
   output$text <- shiny::renderText({
-        "<font color=\"#FF0000\">Dieses Impressum befindet sich derzeit noch in der rechtlichen Prüfung!<br/><br/></font>
+        "<font color=\"#FF0000\">Dieses Impressum befindet sich derzeit noch in der rechtlichen Pruefung!<br/><br/></font>
 
         <h1>Impressum</h1><br/><br/>
         Erstellt durch:\n<br/><br/>
         Dr. rer. nat. Daniel Amsel\n<br/><br/>
-        Institut für Neuropathologie, Fachbereich Medizin Justus-Liebig-Universität Gießen\n<br/>
-        Institut für Neuropathologie Gießen<br/>
-        Fachbereich Medizin der Justus-Liebig-Universität Gießen, Rudolf-Buchheim-Str. 6, 35392 Gießen<br/>
-        Tel. +49 (0) 641 99 41181<br/>
-        E-Mail: Till.Acker@patho.med.uni-giessen.de<br/><br/>
+        Institut fuer Neuropathologie, Fachbereich Medizin Justus-Liebig-Universitaet Giessen\n<br/>
+        Institut fuer Neuropathologie Giessen<br/>
+        Fachbereich Medizin der Justus-Liebig-Universitaet Giessen, Rudolf-Buchheim-Str. 6, 35392 Giessen<br/>
+        Tel. +49 (0) 641 99 41181<br/>
+        E-Mail: Till.Acker@patho.med.uni-giessen.de<br/><br/>
         <b>Vertreten durch:</b><br/>
         Prof. Dr. med. Till Acker\n<br/>
         <b>Inhaltlich verantwortlich:</b><br/>

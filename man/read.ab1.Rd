@@ -8,6 +8,7 @@ read.ab1(
   filename,
   delimiter = "_",
   ID_pos = 1,
+  genename = "",
   genename_pos = 2,
   cutoff = 0.05,
   min_seq_len = 20,
@@ -20,6 +21,8 @@ read.ab1(
 \item{delimiter}{delimiter in genename/ID of ab1 file}
 
 \item{ID_pos}{position of ID in genename/ID of ab1 file}
+
+\item{genename}{gene name of analysed gene in ab1 file}
 
 \item{genename_pos}{position of genename in genename/ID of ab1 file}
 
