@@ -123,8 +123,8 @@ The pipeline generates the following output:
 
 ### Example
 #### Testset
-Feel free to test the pipeline with our provided test set.
-Zenodo?
+Feel free to test the pipeline with our provided test set which you can find under:
+https://zenodo.org/record/5465810#.YVcm0HuxXJU
 
 First clone the repository to your machine:
 `git clone https://github.com/kaischmid/SangeR.git`
