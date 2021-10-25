@@ -35,8 +35,7 @@ ui <- shiny::fluidPage(
 
 
           # Input for genename
-          shiny::selectInput(inputId = "genename",
-                             selected = "",
+          shiny::selectizeInput(inputId = "genename",
                              label = "genename",
                              multiple =  FALSE,
                              choices = NULL),
@@ -150,7 +149,7 @@ server <- function(input, output, session) {
 
   #genename select
 
-  shiny::updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE)
+  shiny::updateSelectizeInput(session, "genename", choices = readRDS(system.file("data","genenames.rds",package = "sangeR")), server = TRUE, selected = "hgnc_symbol")
   shiny::observeEvent(input$buttonid,
                {
                  shiny::updateSelectizeInput(session, "genename",
