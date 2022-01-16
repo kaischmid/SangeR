@@ -5,13 +5,15 @@
 
 -----
 
-Welcome to the git repository of the `SangeR`, the program that makes sanger sequencing analysis high-throughput.
+Welcome to the git repository of `SangeR`, the program that makes sanger sequencing analysis high-throughput.
 
 It provides you different ways to use it.
 
 1. You can use the R package to use it your own way.
 
 2. For high-troughput you can use the [Nextflow](https://www.nextflow.io/) script which utilizes the [Docker](https://www.docker.com/) container.
+
+3. You can use it as a shiny tool: https://gin-sanger.med.uni-giessen.de
 
 
 ## Required Software
@@ -31,7 +33,6 @@ It provides you different ways to use it.
   - ggplot2
   
   - reshape2
-  
 
   - CrispRVariants
   
@@ -48,13 +49,10 @@ You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing
 ```
 $ sudo apt update && apt install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
 
-# takes about 5:30 minutes
 $ R -e 'install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"))'
 
-# takes about 10 minutes
 $ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))'
 
-# takes about
 $ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR")'
 ```
 Hint: `$` assumes a BASH prompt.
