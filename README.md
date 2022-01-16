@@ -140,7 +140,7 @@ Please report any new issues ad [new Github-Issue](https://github.com/kaischmid/
 ## Changelog
 - scheduled for next release
 
-    No features planned
+  - The mayor focus for the next version is the implementation of a machine learning-based algorithm to find a fitting threshold. At the moment it is set statistically.
 
 - [v1.0.0] Link (2020-11-01)
 
