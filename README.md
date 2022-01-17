@@ -118,7 +118,7 @@ The pipeline generates the following output:
 
   - Histogramm for each mutated position/selected POI
 
-  - .csv with the found mutations for all given files
+  - .csv with the found mutations for given file
 
 
 ### Example
