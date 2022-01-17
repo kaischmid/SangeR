@@ -112,7 +112,7 @@ The pipeline gathers the necessary reference data on demand from online resource
 - "Points of interest"
 - "1" "5:1295228"
 - "2" "5:1295250"
-- "<count>" "<chromsome>":"<position on chromosome>" 
+- "`<count>`" "`<chromsome>`":"`<position on chromosome>`" 
 
 
 #### Offline
@@ -127,7 +127,7 @@ The pipeline needs a prepared local reference database for the offline use.
 - "Points of interest"
 - "1" "5:1295228"
 - "2" "5:1295250"
-- "<count>" "<chromsome>":"<position on chromosome>" 
+- "`<count>`" "`<chromsome>`":"`<position on chromosome>`" 
 
 ### PARAMETERS
 
