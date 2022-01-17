@@ -13,7 +13,7 @@ It provides you different ways to use it.
 
 2. For high-troughput you can use the [Nextflow](https://www.nextflow.io/) script which utilizes the [Docker](https://www.docker.com/) container.
 
-3. You can use it as a shiny tool: https://gin-sanger.med.uni-giessen.de
+3. You can get the shiny tool running or use the one provided: https://gin-sanger.med.uni-giessen.de
 
 
 ## Required Software
@@ -45,6 +45,9 @@ It provides you different ways to use it.
   - gridExtra
   
 ## Installation
+
+### Please keep in mind that the following commands are supposed to install SangeR on a blank system.If you have libaries like R already installed it might update system level libraries. If you do not have the permissions or are not willing to install please have a look at the docker container.
+
 You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
 ```
 $ sudo apt update && apt install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
@@ -79,16 +82,26 @@ The pipeline gathers the necessary reference data on demand from online resource
 - In this case you only have to provied the ab1 file which is supposed to be analyzed
 
 - optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
+- The format of this file shall be a .csv file containing the positions like follows:
+- "Points of interest"
+- "1" "5:1295228"
+- "2" "5:1295250"
+- "<count>" "<chromsome>":"<position on chromosome>" 
 
 
 #### Offline
 The pipeline needs a prepared local reference database for the offline use.
 
-- In this case you only have to provied the ab1 file which is supposed to be analyzed
+- In this case you have to provied the ab1 file which is supposed to be analyzed
 
 - Additional you have to provide the needed mart ressources for the genes you want to analyze
 
 - optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
+- The format of this file shall be a .csv file containing the positions like follows:
+- "Points of interest"
+- "1" "5:1295228"
+- "2" "5:1295250"
+- "<count>" "<chromsome>":"<position on chromosome>" 
 
 ### PARAMETERS
 
