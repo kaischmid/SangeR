@@ -81,6 +81,7 @@ If you are struggeling with installing xml2 you may try these commands in R/RStu
 ```
 install.packages("xml2", dependencies=TRUE, INSTALL_opts = c("--no-lock"))
 install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"), dependencies=TRUE, INSTALL_opts = c("--no-lock"))
+```
 
 
 ### For 
