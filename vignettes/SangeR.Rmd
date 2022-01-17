@@ -21,3 +21,24 @@ This vignette describes the function and use of the `sangeR` package
 
 # Abstract
 In the era of Next Generation Sequencing and beyond, the Sanger technique is still widely used for variant verification of inconclusive or ambiguous high-throughput sequencing results or as a low-cost molecular genetical analysis tool for single targets in many fields of study. Many analysis steps need time-consuming manual intervention. Therefore, we present here a pipeline-capable high-throughput solution with an optional Shiny web interface, that provides a binary mutation decision of hotspots together with plotted chromatograms including annotations via flat files based on R and Nextflow.
+
+## Availability
+
+All components of the PARrOT R package and the belonging Python scripts are available for download from the Github repository [PARrOT](https://github.molgen.mpg.de/loosolab/PARrOT/).
+
+### Installation
+
+To install the R-package the following commands have to be executed in R.
+
+```r
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools")
+BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))
+library("devtools")
+install_github("https://github.com/kaischmid/SangeR")
+```
+
+Get the Docker container [here](https://hub.docker.com/repository/docker/kaischmid/sange_r).
+
+Please make sure to check our other projects at [Giessen Institute of Neuropathology](https://github.com/Neuropathology-Giessen).
+
+
