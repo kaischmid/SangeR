@@ -2,13 +2,16 @@
 
 -----
 
-Welcome to the git repository of the `SangeR`, the program that makes sanger sequencing analysis high-throughput.
+
+Welcome to the git repository of `SangeR`, the program that makes sanger sequencing analysis high-throughput.
 
 It provides you different ways to use it.
 
 1. You can use the R package to use it your own way.
 
 2. For high-troughput you can use the [Nextflow](https://www.nextflow.io/) script which utilizes the [Docker](https://www.docker.com/) container.
+
+3. You can get the shiny tool running or use the one provided: https://gin-sanger.med.uni-giessen.de
 
 
 ## Required Software
@@ -28,7 +31,6 @@ It provides you different ways to use it.
   - ggplot2
   
   - reshape2
-  
 
   - CrispRVariants
   
@@ -41,20 +43,46 @@ It provides you different ways to use it.
   - gridExtra
   
 ## Installation
-You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
-```
-$ sudo apt update && apt install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
 
-# takes about 5:30 minutes
+### Please keep in mind that the following commands are supposed to install SangeR on a blank system.If you have libaries like R already installed it might update system level libraries. If you have r-base and the 3 libraries already installed you can probably skip the following comment. In case you do not have the permissions or are not willing to install please have a look at the docker container.
+
+You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
+
+
+First you need to update your 'apt' followed by the install of libcurl4-gnutls-dev libxml2-dev libssl-dev and r-base buy using this command:
+```
+$ sudo apt-get update 
+ 
+$ sudo apt-get install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
+```
+
+You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
+
+```
 $ R -e 'install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"))'
 
-# takes about 10 minutes
 $ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))'
 
-# takes about
 $ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR")'
 ```
 Hint: `$` assumes a BASH prompt.
+
+Or you start R/Rstudio and enter the following lines:
+```
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools")
+BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))
+library("devtools")
+install_github("https://github.com/kaischmid/SangeR")
+```
+
+If you are struggeling with installing xml2 you may try these commands in R/RStudio:
+```
+install.packages("xml2", dependencies=TRUE, INSTALL_opts = c("--no-lock"))
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"), dependencies=TRUE, INSTALL_opts = c("--no-lock"))
+```
+
+
+### For 
 
 
 ## Docker
@@ -78,16 +106,26 @@ The pipeline gathers the necessary reference data on demand from online resource
 - In this case you only have to provied the ab1 file which is supposed to be analyzed
 
 - optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
+- The format of this file shall be a .csv file containing the positions like follows:
+- "Points of interest"
+- "1" "5:1295228"
+- "2" "5:1295250"
+- "`<count>`" "`<chromsome>`":"`<position on chromosome>`" 
 
 
 #### Offline
 The pipeline needs a prepared local reference database for the offline use.
 
-- In this case you only have to provied the ab1 file which is supposed to be analyzed
+- In this case you have to provied the ab1 file which is supposed to be analyzed
 
 - Additional you have to provide the needed mart ressources for the genes you want to analyze
 
 - optional you can provide a POI (Point Of Interest) file to investigate every given file for mutations at your desired positions.
+- The format of this file shall be a .csv file containing the positions like follows:
+- "Points of interest"
+- "1" "5:1295228"
+- "2" "5:1295250"
+- "`<count>`" "`<chromsome>`":"`<position on chromosome>`" 
 
 ### PARAMETERS
 
@@ -115,13 +153,13 @@ The pipeline generates the following output:
 
   - Histogramm for each mutated position/selected POI
 
-  - .csv with the found mutations for given file
+  - .csv with the found mutations for all given files
 
 
 ### Example
 #### Testset
 Feel free to test the pipeline with our provided test set which you can find under:
-https://zenodo.org/record/5465810#.YVcm0HuxXJU
+https://zenodo.org/record/5865470#.YeXufi9XZpQ
 
 First clone the repository to your machine:
 `git clone https://github.com/kaischmid/SangeR.git`
@@ -139,7 +177,7 @@ Please report any new issues ad [new Github-Issue](https://github.com/kaischmid/
 ## Changelog
 - scheduled for next release
 
-    No features planned
+  - The mayor focus for the next version is the implementation of a machine learning-based algorithm to find a fitting threshold. At the moment it is set statistically.
 
 - [v1.0.0] Link (2020-11-01)
 
