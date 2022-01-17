@@ -1,5 +1,5 @@
 ---
-title: "SangeR"
+title: "Introduction to SangeR"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{SangeR}
@@ -14,6 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(sangeR)
-```
+
+This vignette describes the function and use of the `sangeR` package 
+
+![](../vignettes/sangeR_logo.PNG)
+
+# Abstract
+In the era of Next Generation Sequencing and beyond, the Sanger technique is still widely used for variant verification of inconclusive or ambiguous high-throughput sequencing results or as a low-cost molecular genetical analysis tool for single targets in many fields of study. Many analysis steps need time-consuming manual intervention. Therefore, we present here a pipeline-capable high-throughput solution with an optional Shiny web interface, that provides a binary mutation decision of hotspots together with plotted chromatograms including annotations via flat files based on R and Nextflow.

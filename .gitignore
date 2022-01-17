@@ -44,6 +44,5 @@ vignettes/*.pdf
 *.ab1
 results*
 *.fastq
-*.png
 container/*
 inst/doc
