@@ -1,4 +1,4 @@
-![sangeR](./vignettes/sangeR_logo.PNG "sangeR")
+![sangeR](./vignettes/sanger_logo.png "sangeR")
 
 -----
 
