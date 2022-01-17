@@ -1,7 +1,4 @@
-
-<p align="left">
-  <img src="sanger_logo.png" alt="SangeR logo"/>
-</p>
+![sangeR](./vignettes/sangeR_logo.PNG "sangeR")
 
 -----
 
