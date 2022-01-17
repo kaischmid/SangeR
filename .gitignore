@@ -40,8 +40,10 @@ vignettes/*.pdf
 
 #exclude data
 
+*.mart
 *.ab1
 results*
 *.fastq
 *.png
 container/*
+inst/doc
