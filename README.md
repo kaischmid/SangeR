@@ -46,12 +46,21 @@ It provides you different ways to use it.
   
 ## Installation
 
-### Please keep in mind that the following commands are supposed to install SangeR on a blank system.If you have libaries like R already installed it might update system level libraries. If you do not have the permissions or are not willing to install please have a look at the docker container.
+### Please keep in mind that the following commands are supposed to install SangeR on a blank system.If you have libaries like R already installed it might update system level libraries. If you have r-base and the 3 libraries already installed you can probably skip the following comment. In case you do not have the permissions or are not willing to install please have a look at the docker container.
 
 You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
-```
-$ sudo apt update && apt install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
 
+
+First you need to update your 'apt' followed by the install of libcurl4-gnutls-dev libxml2-dev libssl-dev and r-base buy using this command:
+```
+$ sudo apt-get update 
+ 
+$ sudo apt-get install -y build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev r-base
+```
+
+You can install the SangeR package via R's `devtools` in Ubuntu/Debian by typing:
+
+```
 $ R -e 'install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"))'
 
 $ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))'
@@ -59,6 +68,22 @@ $ R -e 'BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerse
 $ R -e 'library("devtools"); install_github("https://github.com/kaischmid/SangeR")'
 ```
 Hint: `$` assumes a BASH prompt.
+
+Or you start R/Rstudio and enter the following lines:
+```
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools")
+BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))
+library("devtools")
+install_github("https://github.com/kaischmid/SangeR")
+```
+
+If you are struggeling with installing xml2 you may try these commands in R/RStudio:
+```
+install.packages("xml2", dependencies=TRUE, INSTALL_opts = c("--no-lock"))
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"), dependencies=TRUE, INSTALL_opts = c("--no-lock"))
+
+
+### For 
 
 
 ## Docker
@@ -135,7 +160,7 @@ The pipeline generates the following output:
 ### Example
 #### Testset
 Feel free to test the pipeline with our provided test set which you can find under:
-https://zenodo.org/record/5465810#.YVcm0HuxXJU
+https://zenodo.org/record/5865470#.YeXufi9XZpQ
 
 First clone the repository to your machine:
 `git clone https://github.com/kaischmid/SangeR.git`
