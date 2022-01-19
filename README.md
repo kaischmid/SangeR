@@ -69,7 +69,7 @@ Hint: `$` assumes a BASH prompt.
 
 Or you start R/Rstudio and enter the following lines:
 ```
-install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools")
+install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtools"))
 BiocManager::install(c("Biostrings","CrispRVariants","biomaRt","sangerseqR"))
 library("devtools")
 install_github("https://github.com/kaischmid/SangeR")
