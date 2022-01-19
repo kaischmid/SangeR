@@ -44,11 +44,14 @@ plot_hist <- function(SangeR, POI){
     for(point in unlist(POI)){
 
       chr <- as.numeric(strsplit(point,":")[[1]][1])
+      chr_pos <- as.numeric(strsplit(point,":")[[1]][2])
       pos <- as.numeric(strsplit(point,":")[[1]][2])
       end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream+1,SangeR$ref_pos$end_position-1)
       start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream-1,SangeR$ref_pos$start_position+1)
+      tags <- c()
 
-      if(any((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)) && chr == SangeR$ref_pos$chromosome_name) {
+      if(chr == SangeR$ref_pos$chromosome_name){ if(any((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))) {
+
 
         #write tag for protein region
         if(SangeR$strand == "forward"){
@@ -62,16 +65,10 @@ plot_hist <- function(SangeR, POI){
 
             Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
 
-            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G","N")){
+            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos),"wt"))
+            SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
 
-              heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
-            }else {
 
-              substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
-
-            Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
-
-            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
           } else{
             #IDH1
 
@@ -82,12 +79,8 @@ plot_hist <- function(SangeR, POI){
 
             Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
 
-            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
-            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
-
-            Aa_mut <- translate(Aa[1], exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
-
-            tags <- c(tags, paste0(Aa[1], sprintf("%03d", AA_pos), Aa_mut))
+            tags <- c(tags, paste0(Aa[1], sprintf("%03d", AA_pos), "wt"))
+            SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
 
           } } else {
 
@@ -100,23 +93,25 @@ plot_hist <- function(SangeR, POI){
 
             Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
 
-            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
-            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), "wt"))
+            SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
 
-            Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
-
-            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
           }
+
+        SangeR$tags <- c(SangeR$tags, tags)
+        SangeR$mutations_ref <- unique(c(SangeR$mutations_ref, end - pos))
 
       } else {
 
         #write tag for off-region
-        base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
-        mutation <- stringr::str_sub(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)
-        tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mutation))
+        tags <- paste0(substr(SangeR$ref_seq$gene_exon_intron,end-pos,end-pos),substr(point,nchar(point)-2,nchar(point)),"wt")
+        SangeR$tags_POI <- c(SangeR$tags_POI, tags)
+        SangeR$mutations_ref_POI <- c(SangeR$mutations_ref, end - pos)
+        SangeR$tags <- unique(c(SangeR$tags, tags))
+        SangeR$mutations_ref <- unique(c(SangeR$mutations_ref, end - pos))
 
       }
-    }
+    }}
   }
 
   #region of interest
