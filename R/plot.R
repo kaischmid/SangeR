@@ -48,15 +48,74 @@ plot_hist <- function(SangeR, POI){
       end <- ifelse(SangeR$ref_pos$strand==-1,SangeR$ref_pos$end_position+SangeR$upstream+1,SangeR$ref_pos$end_position-1)
       start <- ifelse(SangeR$ref_pos$strand==1,SangeR$ref_pos$start_position-SangeR$upstream-1,SangeR$ref_pos$start_position+1)
 
-      if(chr == SangeR$ref_pos$chromosome_name && pos < end && pos > SangeR $ref_pos$start_position){
+      if(any((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)) && chr == SangeR$ref_pos$chromosome_name) {
 
-          tag <- paste0(substr(SangeR$ref_seq$gene_exon_intron,end-pos,end-pos),substr(point,nchar(point)-2,nchar(point)),"wt")
-          SangeR$tags_POI <- c(SangeR$tags_POI, tag)
-          SangeR$mutations_ref_POI <- c(SangeR$mutations_ref, end - pos)
-          SangeR$tags <- unique(c(SangeR$tags, tag))
-          SangeR$mutations_ref <- c(SangeR$mutations_ref, end - pos)
+        #write tag for protein region
+        if(SangeR$strand == "forward"){
 
-        }
+          #for forward strand
+
+          if(SangeR$ref_pos$strand == 1){
+            boolean <- (SangeR$pep_info$exon_chrom_start<chr_pos)
+
+            AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean],na.rm = TRUE) - (SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)] - as.numeric(chr_pos)))/3)
+
+            Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
+
+            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G","N")){
+
+              heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+            }else {
+
+              substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+
+            Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+
+            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
+          } else{
+            #IDH1
+
+            boolean <- (SangeR$pep_info$exon_chrom_end<chr_pos)
+            boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+
+            AA_pos <- ceiling((sum(SangeR$pep_info$length[!boolean],na.rm = TRUE) - (as.numeric(chr_pos) - SangeR$pep_info$exon_chrom_start[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]))/3)
+
+            Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
+
+            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+
+            Aa_mut <- translate(Aa[1], exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+
+            tags <- c(tags, paste0(Aa[1], sprintf("%03d", AA_pos), Aa_mut))
+
+          } } else {
+
+            #for reverse strand
+
+            boolean <- (SangeR$pep_info$exon_chrom_end>chr_pos)
+            boolean[which((SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos))] <- FALSE
+
+            AA_pos <- ceiling((sum(SangeR$pep_info$length[boolean]) + (SangeR$pep_info$exon_chrom_end[(SangeR$pep_info$exon_chrom_start<chr_pos) == (SangeR$pep_info$exon_chrom_end>chr_pos)]) - as.numeric(chr_pos))/3)
+
+            Aa <- stringr::str_sub(SangeR$ref_amino$peptide, AA_pos, AA_pos)
+
+            exchange <- if(!substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi) %in% c("A","C","T","G")){heterozygote(substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi), stringr::str_sub(SangeR$align_seq, mut, mut))
+            }else {substr(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)}
+
+            Aa_mut <- translate(Aa, exchange, stringr::str_sub(SangeR$align_seq, mut-2, mut+2))
+
+            tags <- c(tags, paste0(Aa, sprintf("%03d", AA_pos), Aa_mut))
+          }
+
+      } else {
+
+        #write tag for off-region
+        base <- stringr::str_sub(SangeR$ref_seq$gene_exon_intron, mut, mut)
+        mutation <- stringr::str_sub(SangeR$fastq, SangeR$mutations_abi, SangeR$mutations_abi)
+        tags <- c(tags, paste0(base,stringr::str_sub(mutpos, -3, -1),mutation))
+
+      }
     }
   }
 
