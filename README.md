@@ -82,9 +82,6 @@ install.packages(c("BiocManager","stringr","ggplot2","reshape2","seqinr","devtoo
 ```
 
 
-### For 
-
-
 ## Docker
 We also provide `SangeR` as [DOCKER image](https://hub.docker.com/r/kaischmid/sange_r). We tested the image on Ubuntu and MacOS. 
 
@@ -94,6 +91,33 @@ docker pull kaischmid/sange_r
 
 
 ## Usage
+
+You can use SangeR in different ways:
+1. shiny
+2. R 
+  In container
+  without 
+4. nextflow
+
+###shiny
+
+The easiest way to get in touch with SangeR is to have a look at the provide shiny app:
+
+It can be found under:
+
+https://gin-sanger.med.uni-giessen.de
+
+or by pulling the Git repository and run the app.R in R/Rstudio
+
+'''R
+shiny::runApp('<dowbload_directory>/SangeR-master/R')
+'''
+
+
+
+
+
+
 
 ### Input data
 
@@ -154,6 +178,12 @@ The pipeline generates the following output:
   - Histogramm for each mutated position/selected POI
 
   - .csv with the found mutations for all given files
+
+
+
+
+
+
 
 
 ### Example
