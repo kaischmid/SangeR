@@ -113,10 +113,20 @@ or by pulling the Git repository and run the app.R in R/Rstudio
 shiny::runApp('<dowbload_directory>/SangeR-master/R')
 '''
 
+In the GUI you can now select a .ab1 file from the provide test data: https://zenodo.org/record/5865470#.YeiFfC9XZpQ
 
+The files from the .zip named ab1_with_mutation.zip contain examples with mutation.
 
+Also you can upload the POI file from the git repository you can find under "/data/".
 
+All positions in the POI will be plottet, so that the user can have a look at the chromatogramm.
 
+The need for this function can be recognized by looking at Patient 1. 
+By the default threshold SangeR only can find the silent mutation G105G. By including the POI the user can have a look at 132 position and is able to decied on his own if the signal is too strong.
+
+Also you can download the plot at the bottom of the menu.
+
+### R/Rstudio
 
 
 ### Input data
