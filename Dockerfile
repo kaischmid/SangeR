@@ -21,4 +21,4 @@ R -e "BiocManager::install(c('biomaRt','sangerseqR'))" \
 R -e "BiocManager::install(c('CrispRVariants','Biostrings'))"
 
 RUN R -e "install.packages('devtools',repos = 'http://cran.us.r-project.org')"
-RUN R -e "devtools::install_github("https://github.com/kaischmid/SangeR.git")"
+RUN R -e "devtools::install_github('https://github.com/kaischmid/SangeR.git')"
