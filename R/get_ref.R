@@ -27,7 +27,7 @@ get_ref <- function(SangeR, upstream = 500, host = "grch37.ensembl.org", dataset
 
   if(length(SangeR$ref_seq$gene_exon_intron) == 0){
     cnt <- 1
-    SangeR$Bnummer <- SangeR$Bnummer
+    SangeR$Bnummer <- SangeR$genename
     while(length(SangeR$ref_seq$gene_exon_intron) == 0 & cnt < 5) {
       genename <- strsplit(SangeR$ids, SangeR$delimiter)[[1]][cnt]
       genename <- gsub('[[:lower:]]', '', genename)
