@@ -12,7 +12,6 @@ params.output_dir = './'
 process histogram {
 
   publishDir "${params.output_dir}/SangerResults", mode:'copy'
-  container 'kaischmid/sange_r'
   tag "${ab1}"
   echo true
 
