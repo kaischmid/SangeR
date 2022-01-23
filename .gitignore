@@ -46,4 +46,6 @@ results*
 *.fastq
 container/*
 inst/doc
-.nextflow/*
+.nextflow*
+work/*
+SangerResults/*
