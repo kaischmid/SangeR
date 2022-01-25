@@ -49,3 +49,4 @@ inst/doc
 .nextflow*
 work/*
 SangerResults/*
+*.docker

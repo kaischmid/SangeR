@@ -5,31 +5,33 @@ params.output_dir = './'
 params.POI = './'
 
 //submit
-aubmit = file('home/schmid/sanger/submit.pl')
+submit = file('home/schmid/sanger/submit.pl')
 
 ab1 = Channel.watchPath( "${params.input_dir}*.ab1", 'create,modify' )
 
 //script load
 run_nextflow = file('./run_nextflow.R')
+POI = file("${params.POI}")
 
 process histogram {
 
   publishDir "${params.output_dir}/SangerResults", mode:'copy'
+  container 'kaischmid/sange_r'
   tag "${ab1}"
   echo true
 
 
   input:
-  set basename, file(ab1) from ab1
+  file(ab1) from ab1
   file(run_nextflow)
-  file(${params.POI})
+  file(POI)
 
   output:
   set basename, file('*.png') optional true into png
-  file('*.csv') into png
+  file('*.csv') into csv
 
   """
-  Rscript run_nextflow.R $ab1 ${params.POI}
+  Rscript run_nextflow.R $ab1 ./POI
   """
 
 }
@@ -46,7 +48,7 @@ process histogram {
    """
    mv /mnt/miracum_archiv/ImportEPIC/sanger/${basename}.ab1 /mnt/miracum_archiv/SangerResults/
    """
-
+}
 
  process submit{
 
